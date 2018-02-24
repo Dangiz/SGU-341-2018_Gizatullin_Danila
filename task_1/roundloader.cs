@@ -27,7 +27,7 @@ namespace Task_1
             }
             catch(Exception e)
             {
-                throw new InvalidDataException("Wrong input symbol");
+                throw new InvalidDataException("Wrong input symbol"+e.Message);
             }
 
             return new Round(x, y, r);
