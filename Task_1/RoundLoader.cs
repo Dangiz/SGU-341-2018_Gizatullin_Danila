@@ -21,13 +21,13 @@ namespace Task_1
             double x, y, r;
             try
             {
-                x= double.Parse(ReadedData[0]);
+                x= double.Parse(ReadedData[2]);
                 y = double.Parse(ReadedData[1]);
-                r = double.Parse(ReadedData[2]);
+                r = double.Parse(ReadedData[0]);
             }
             catch(Exception e)
             {
-                throw new InvalidDataException("Wrong input symbol");
+                throw new InvalidDataException("Wrong input symbol"+e.Message);
             }
 
             return new Round(x, y, r);
