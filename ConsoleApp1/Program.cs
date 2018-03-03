@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Users;
+using RingClass;
 
 namespace ConsoleApp1
 {
@@ -11,8 +11,9 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            User Ivan = new User("Иван", "Иванов", "Иванович", new DateTime(1990, 01, 01));
-            Console.WriteLine(Ivan.ToString() + "Of age:" + Ivan.Age);
+            Ring r = new Ring(0, 0, 5, 6);
+            r.SetRads(12, 12);
+            Console.WriteLine(r.Area);
         }
     }
 }
