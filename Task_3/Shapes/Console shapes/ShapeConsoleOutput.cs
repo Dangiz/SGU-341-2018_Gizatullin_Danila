@@ -18,7 +18,7 @@ namespace Task_3.Shapes
 
         public void Draw(IShape shape)
         {
-            Console.Write(shape);
+            Console.WriteLine(shape.GetDescription());
         }
         
 

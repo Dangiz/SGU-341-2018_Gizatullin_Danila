@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Game\GameCharacter.cs" />
+    <Compile Include="Game\GameObject.cs" />
+    <Compile Include="Game\Grid.cs" />
+    <Compile Include="Game\GridTransform.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shapes\IShapeOutput.cs" />
@@ -49,10 +53,13 @@
     <Compile Include="Shapes\Round.cs" />
     <Compile Include="Shapes\IShape.cs" />
     <Compile Include="Shapes\Point.cs" />
-    <Compile Include="ShapeConsoleOutput.cs" />
+    <Compile Include="Shapes\Console shapes\ShapeConsoleOutput.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Game\Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
