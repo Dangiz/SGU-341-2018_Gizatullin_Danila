@@ -36,7 +36,7 @@ namespace BookSaver.DatabaseBookData
         {
             SqlConnection con = new SqlConnection(connectionString);
             SqlCommand command = con.CreateCommand();
-            command.CommandText = "execute LibrarySystem.dbo.Book_Insert " + "@Name='" + book.Name + "',@Author='" + book.Author + "',@Genre='" + book.Genre.Name + "'";
+            command.CommandText = $"execute LibrarySystem.dbo.Book_Insert@Name='{book.Name}',@Author='{book.Author}',@Genre='{book.Genre.Name}'";
             try
             {
                 command.Connection.Open();
@@ -57,7 +57,7 @@ namespace BookSaver.DatabaseBookData
         {
             SqlConnection con = new SqlConnection(connectionString);
             SqlCommand command = con.CreateCommand();
-            command.CommandText = command.CommandText = "DECLARE @ID_Genre INTEGER; EXECUTE dbo.Genre_Insert @NewGenre='" + genre.Name+ "', @Genre_ID=@ID_Genre OUTPUT;";
+            command.CommandText = command.CommandText = $"DECLARE @ID_Genre INTEGER; EXECUTE dbo.Genre_Insert @NewGenre='{genre.Name}', @Genre_ID=@ID_Genre OUTPUT;";
             try
             {
                 command.Connection.Open();
