@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ninject;
 using BookSaver.Logic;
 using BookSaver.LogicContracts;
@@ -21,6 +17,9 @@ namespace BookSaver.Config
             kernel
                 .Bind<IBookLogic>()
                 .To<BookLogic>();
+            kernel
+                .Bind<IGenreLogic>()
+                .To<GenreLogic>();
 
             string daoType = ConfigurationManager.AppSettings["DaoType"];
             switch (daoType)
@@ -28,22 +27,24 @@ namespace BookSaver.Config
                 case "Memory":
                     kernel
                         .Bind<IBookDataAcces>()
-                        .To<MemoryBookDao>();
+                        .To<MemoryBookDao>().InSingletonScope();
+                    kernel
+                        .Bind<IGenreDataAcces>()
+                        .To<MemoryGenreDao>().InSingletonScope();
                     break;
                 case "DataBase":
                     {
                         kernel
                             .Bind<IBookDataAcces>()
-                            .To<DatabaseBookDao>();
+                            .To<DatabaseBookDao>().InSingletonScope();
+                        kernel
+                            .Bind<IGenreDataAcces>()
+                            .To<DataBaseGenreDao>().InSingletonScope();
                         break;
                     }
                 default:
                     throw new ArgumentException("Wrong DAO type in config file");
             }
-
-            //kernel
-            //    .Bind<INoteDao>()
-            //    .To<FileNoteDao>();
         }
     }
 }

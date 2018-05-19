@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookSaver.Entities
+﻿namespace BookSaver.Entities
 {
     public class Book
     {
+        public Book()
+        { }
+
         public Book(Genre genre, string name, string author)
         {
             Genre = genre;
@@ -24,8 +21,11 @@ namespace BookSaver.Entities
         }
 
         public int Id { get; set; }
+
         public Genre Genre { get; set; }
-        public String Name { get; set; }
-        public String Author { get; set; }
+
+        public string Name { get; set; }
+
+        public string Author { get; set; }
     }
 }

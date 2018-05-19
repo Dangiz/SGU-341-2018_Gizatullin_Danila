@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ninject;
-using BookSaver.Logic;
 using BookSaver.LogicContracts;
 using BookSaver.Config;
-using BookSaver.Entities;
 
 namespace ADO_NET_Task4
 {
     class Program
     {
         private static IBookLogic bookLogic;
+        private static IGenreLogic genreLogic;
 
         static Program()
         {
             IKernel ninjectKernel = new StandardKernel();
             Config.RegisterServices(ninjectKernel);
             bookLogic = ninjectKernel.Get<IBookLogic>();
+            genreLogic = ninjectKernel.Get<IGenreLogic>();
         }
-
+   
         static void Main(string[] args)
         {
             while (true)
@@ -69,7 +65,7 @@ namespace ADO_NET_Task4
 
         private static void ShowBooks()
         {
-            Book[] books = bookLogic.GetAllBooks();
+            var books = bookLogic.GetAllBooks();
             foreach (var book in books)
             {
                 Console.WriteLine($"{book.Id}. {book.Name} {book.Author} ({book.Genre.Name})");
@@ -79,7 +75,7 @@ namespace ADO_NET_Task4
 
         private static void ShowGenres()
         {
-            Genre[] genres = bookLogic.GetAllGenres();
+            var genres = genreLogic.GetAllGenres();
             foreach (var genre in genres)
             {
                 Console.WriteLine($"{genre.Id} {genre.Name}");
@@ -105,7 +101,7 @@ namespace ADO_NET_Task4
         {
             Console.WriteLine("Enter the genre name: ");
             string genreName = Console.ReadLine();
-            bookLogic.AddGenre(genreName);
+            genreLogic.AddGenre(genreName);
         
             Console.ReadLine();
         }

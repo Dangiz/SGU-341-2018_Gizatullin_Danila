@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookSaver.DataContracts;
 using BookSaver.Entities;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace BookSaver.DatabaseBookData
 {
     public class DatabaseBookDao : IBookDataAcces
     {
-        private String connectionString;
+        private readonly string connectionString;
+        private IGenreDataAcces _genreDao;
 
-        public DatabaseBookDao()
+        public DatabaseBookDao(IGenreDataAcces genreDao)
         {
             connectionString = SetDataBaseConnection();
+            _genreDao = genreDao;
         }
 
         private string SetDataBaseConnection()
@@ -34,88 +35,50 @@ namespace BookSaver.DatabaseBookData
 
         public bool AddBook(Book book)
         {
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand command = con.CreateCommand();
-            command.CommandText = $"execute LibrarySystem.dbo.Book_Insert@Name='{book.Name}',@Author='{book.Author}',@Genre='{book.Genre.Name}'";
-            try
-            {
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-                return true;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            
+                using (SqlCommand command = new SqlCommand("dbo.Book_Insert", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Name", System.Data.SqlDbType.NVarChar)
+                    {
+                        Value = book.Name
+                    });
+                    command.Parameters.Add(new SqlParameter("@Author", System.Data.SqlDbType.NVarChar)
+                    {
+                        Value = book.Author
+                    });
+                    command.Parameters.Add(new SqlParameter("@Genre", System.Data.SqlDbType.NVarChar)
+                    {
+                        Value = book.Genre.Name,
+                    });
+                    command.Parameters.Add("@Book_ID", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    con.Open();
+                    int a = command.ExecuteNonQuery();
+                    book.Id = command.Parameters["@Book_ID"].Value as int? ?? default(int);
+                    return a>0;
+                }
             }
-            catch
-            {
-                return false;
-            }
-            finally
-            {
-                con.Close();
-            }
-        }
-
-        public bool AddGenre(Genre genre)
-        {
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand command = con.CreateCommand();
-            command.CommandText = command.CommandText = $"DECLARE @ID_Genre INTEGER; EXECUTE dbo.Genre_Insert @NewGenre='{genre.Name}', @Genre_ID=@ID_Genre OUTPUT;";
-            try
-            {
-                command.Connection.Open();
-                command.ExecuteNonQuery();
-                return true;
-            }
-
-            finally
-            {
-                con.Close();
-            }
-        }
 
         public IEnumerable<Book> GetAllBooks()
         {
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand command = con.CreateCommand();
-            command.CommandText = "EXECUTE dbo.Books_Select";
-            try
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Books_Select", con))
             {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
                 List<Book> books = new List<Book>();
-                List<Genre> genres = (List<Genre>) GetAllGenres();
-                command.Connection.Open();
-                var reader = command.ExecuteReader();
-                while(reader.Read())
+                List<Genre> genres = (List<Genre>) _genreDao.GetAllGenres();
+                con.Open();
+                using (var reader = command.ExecuteReader())
                 {
-                    Genre genre = genres.First(g=>g.Name.CompareTo(reader[4].ToString())==0);
-                    Book book = new Book(int.Parse(reader[0].ToString()),genre,reader[1].ToString(), reader[2].ToString());
-                    books.Add(book);
+                    while (reader.Read())
+                    {
+                        Genre genre = genres.First(g => g.Name.CompareTo(reader[4].ToString()) == 0);
+                        Book book = new Book(int.Parse(reader["ID"].ToString()), genre, reader["Name"].ToString(), reader["Author"].ToString());
+                        books.Add(book);
+                    }
                 }
                 return books;
-            }
-            finally
-            {
-                command.Connection.Close();
-            }
-        }
-
-        public IEnumerable<Genre> GetAllGenres()
-        {
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand command = con.CreateCommand();
-            command.CommandText = "EXECUTE dbo.Genre_Select";
-            try
-            {
-                List<Genre> genres = new List<Genre>();
-                command.Connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    Genre genre = new Genre(int.Parse(reader[0].ToString()),reader[1].ToString());
-                    genres.Add(genre);
-                }
-                return genres;
-            }
-            finally
-            {
-                command.Connection.Close();
             }
         }
     }

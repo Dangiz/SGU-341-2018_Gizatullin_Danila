@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookSaver.Entities;
 using BookSaver.LogicContracts;
 using BookSaver.DataContracts;
@@ -12,20 +10,23 @@ namespace BookSaver.Logic
     public class BookLogic : IBookLogic
     {
         private IBookDataAcces _bookDao;
+        private IGenreLogic _genreLogic;
 
-        public BookLogic(IBookDataAcces noteDao)
+        public BookLogic(IBookDataAcces bookDao,IGenreLogic genreLogic)
         {
-            _bookDao = noteDao;
-            //_noteDao = DaoProvider.NoteDao;
+            _bookDao = bookDao;
+            _genreLogic = genreLogic;
         }
 
-        public Book AddBook(string Name, string Author, string Genre)
+        public Book AddBook(string name, string author, string genre)
         {
-            if(string.IsNullOrWhiteSpace(Name)|| string.IsNullOrWhiteSpace(Author)|| string.IsNullOrWhiteSpace(Genre))
+            if (string.IsNullOrWhiteSpace(name) || 
+                string.IsNullOrWhiteSpace(author) || 
+                string.IsNullOrWhiteSpace(genre))
             {
                 throw new ArgumentException("One of inserted Book parametres are not available");
             }
-            Book book = new Book(AddGenre(Genre), Name, Author);
+            Book book = new Book(_genreLogic.AddGenre(genre), name, author);
             
             if(_bookDao.AddBook(book))
             {
@@ -36,34 +37,11 @@ namespace BookSaver.Logic
                 throw new InvalidOperationException("Error by saving new book");
             }
         }
-        public Genre AddGenre(string Name)
+
+        public IEnumerable<Book> GetAllBooks()
         {
-            if(string.IsNullOrWhiteSpace(Name))
-            {
-                throw new ArgumentException("Genre Name is whitespace or null");
-            }
-            Genre genre = new Genre(Name);
-            if (_bookDao.AddGenre(genre))
-            {
-                return genre;
-            }
-            else
-            {
-                throw new InvalidOperationException("Error by saving new Genre");
-            }
-        }
-        public Genre[] GetAllGenres()
-        {
-            return _bookDao.GetAllGenres().ToArray();
-        }
-        public Book[] GetAllBooks()
-        {
-            return _bookDao.GetAllBooks().ToArray();
+            return _bookDao.GetAllBooks();
         }
 
-        public IEnumerable<Book> GetBookBySubstr()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
