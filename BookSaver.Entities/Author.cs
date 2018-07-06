@@ -8,6 +8,9 @@ namespace BookSaver.Entities
 {
     public class Author
     {
+        public Author()
+        {
+        }
 
         public Author(int id, string name, string surname)
         {

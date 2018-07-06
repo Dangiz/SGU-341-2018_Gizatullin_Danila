@@ -11,5 +11,6 @@ namespace BookSaver.LogicContracts
     {
         Genre AddGenre(string name);
         IEnumerable<Genre> GetAllGenres();
+        IEnumerable<Book> GetGenreBooks(Genre genre);
     }
 }

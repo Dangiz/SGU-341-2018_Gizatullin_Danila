@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorLogic.cs" />
     <Compile Include="BookLogic.cs" />
     <Compile Include="GenreLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -4,6 +4,10 @@ namespace BookSaver.Entities
 {
     public class Publisher
     {
+        public Publisher()
+        {
+        }
+
         public Publisher(int id, string name, string city, string street, int house_Number)
         {
             Id = id;

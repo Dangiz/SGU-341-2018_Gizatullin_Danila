@@ -41,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataBaseAuthorDao.cs" />
     <Compile Include="DatabaseBookDao.cs" />
     <Compile Include="DataBaseGenreDao.cs" />
+    <Compile Include="DataBaseMagazineDao.cs" />
+    <Compile Include="DataBasePublicationDao.cs" />
+    <Compile Include="DataBasePublisherDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

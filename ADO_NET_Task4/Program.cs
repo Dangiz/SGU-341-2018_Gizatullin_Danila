@@ -9,9 +9,12 @@ namespace ADO_NET_Task4
 {
     class Program
     {
-        //private static IBookLogic bookLogic;
+        private static IAuthorLogic authorLogic;
+        private static IBookLogic bookLogic;
         //private static IGenreLogic genreLogic;
+
         private static IBookDataAcces bookData;
+
 
         static Program()
         {
@@ -19,19 +22,40 @@ namespace ADO_NET_Task4
             IKernel ninjectKernel = new StandardKernel();
             Config.RegisterServices(ninjectKernel);
             bookData = ninjectKernel.Get<IBookDataAcces>();
-            //bookLogic = ninjectKernel.Get<IBookLogic>();
+            bookLogic = ninjectKernel.Get<IBookLogic>();
+            authorLogic = ninjectKernel.Get<IAuthorLogic>();
             //genreLogic = ninjectKernel.Get<IGenreLogic>();
         }
+
+
    
         static void Main(string[] args)
         {
-            Book book=bookData.GetBookById(6);
-            Console.WriteLine($"{book.Id} {book.Name} {book.Year}");
-            /*foreach (Genre genre in book.Genres)
+            foreach(Book book in bookLogic.GetAllBooks())
             {
-                Console.WriteLine($"{genre.Name}");
-            }*/
+                ShowBook(book);
+                foreach (Genre genre in bookLogic.GetBookGenres(book))
+                    ShowGenre(genre);
+                Console.WriteLine();
+            }
+
+            foreach (Author author in authorLogic.GetAllAuthors())
+                ShowAuthor(author);
+            
         }
-        
+
+        private static void ShowBook(Book book)
+        {
+            Console.WriteLine($"{book.Id} {book.Name} {book.Year}");
+        }
+        private static void ShowGenre(Genre genre)
+        {
+            Console.WriteLine($"{genre.Id} {genre.Name}");
+        }
+        private static void ShowAuthor(Author author)
+        {
+            Console.WriteLine($"{author.Id} {author.Name} {author.Surname}");
+        }
+
     }
 }

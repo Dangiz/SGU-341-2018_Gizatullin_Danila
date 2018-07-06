@@ -40,8 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAuthorLogic.cs" />
     <Compile Include="IBookLogic.cs" />
     <Compile Include="IGenreLogic.cs" />
+    <Compile Include="IMagazineLogic.cs" />
+    <Compile Include="IPublicationLogic.cs" />
+    <Compile Include="IPublisherLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

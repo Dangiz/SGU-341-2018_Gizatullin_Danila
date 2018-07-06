@@ -5,11 +5,12 @@ namespace BookSaver.Entities
 {
     public class Magazine
     {
-        private Func<IEnumerable<Publication>> getPublications;
-
-        public Magazine(Func<IEnumerable<Publication>> getPublications, int id, string name)
+        public Magazine()
         {
-            this.getPublications = getPublications;
+        }
+
+        public Magazine(int id, string name)
+        {
             Id = id;
             Name = name;
         }

@@ -12,23 +12,11 @@ namespace BookSaver.DatabaseBookData
     {
         private readonly string connectionString;
 
-        public DataBaseGenreDao()
+        public DataBaseGenreDao(string connectionString)
         {
-            connectionString = SetDataBaseConnection();
+            this.connectionString = connectionString;
         }
 
-        private string SetDataBaseConnection()
-        {
-            switch (ConfigurationManager.AppSettings["DataBaseAccesType"])
-            {
-                case "Remote":
-                    return ConfigurationManager.ConnectionStrings["Remote"].ConnectionString;
-                case "Local":
-                    return ConfigurationManager.ConnectionStrings["Local"].ConnectionString;
-                default:
-                    throw new ArgumentException("Wrong DataBase connection type in config file");
-            }
-        }
         public IEnumerable<Genre> GetAllGenres()
         {
             throw new NotImplementedException();

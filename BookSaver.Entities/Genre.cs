@@ -5,6 +5,9 @@ namespace BookSaver.Entities
 {
     public class Genre
     {
+        public Genre()
+        {
+        }
 
         public Genre(int id, string name)
         {         
