@@ -68,10 +68,6 @@
       <Project>{71c85a4f-e19c-437d-adf0-fd24b0d3a98d}</Project>
       <Name>BookSaver.DataContracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MemoryData\BookSaver.MemoryBookData.csproj">
-      <Project>{df70d9cd-b7d4-43ab-82b4-d88ce5dcf234}</Project>
-      <Name>BookSaver.MemoryBookData</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

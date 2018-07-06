@@ -1,31 +1,26 @@
-﻿namespace BookSaver.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace BookSaver.Entities
 {
     public class Book
     {
         public Book()
-        { }
-
-        public Book(Genre genre, string name, string author)
         {
-            Genre = genre;
-            Name = name;
-            Author = author;
         }
 
-        public Book(int id, Genre genre, string name, string author)
+        public Book(int id, string name, int year)
         {
             Id = id;
-            Genre = genre;
             Name = name;
-            Author = author;
+            Year = year;
         }
 
-        public int Id { get; set; }
-
-        public Genre Genre { get; set; }
+        public int Id { get; }
 
         public string Name { get; set; }
 
-        public string Author { get; set; }
+        public int Year { get; set; }
+
     }
 }

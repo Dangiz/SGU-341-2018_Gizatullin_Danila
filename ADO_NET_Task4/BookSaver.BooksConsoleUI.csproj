@@ -94,6 +94,10 @@
       <Project>{863e983d-f077-49fb-908e-119511311b71}</Project>
       <Name>BookSaver.Logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAL_Contracts\BookSaver.DataContracts.csproj">
+      <Project>{71c85a4f-e19c-437d-adf0-fd24b0d3a98d}</Project>
+      <Name>BookSaver.DataContracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

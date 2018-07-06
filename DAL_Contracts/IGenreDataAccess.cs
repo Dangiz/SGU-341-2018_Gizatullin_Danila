@@ -11,5 +11,7 @@ namespace BookSaver.DataContracts
     {
         bool AddGenre(Genre genre);
         IEnumerable<Genre> GetAllGenres();
+        IEnumerable<Genre> GetGenresByBookId(int id);
+
     }
 }

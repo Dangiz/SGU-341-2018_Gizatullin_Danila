@@ -2,108 +2,36 @@
 using Ninject;
 using BookSaver.LogicContracts;
 using BookSaver.Config;
+using BookSaver.DataContracts;
+using BookSaver.Entities;
 
 namespace ADO_NET_Task4
 {
     class Program
     {
-        private static IBookLogic bookLogic;
-        private static IGenreLogic genreLogic;
+        //private static IBookLogic bookLogic;
+        //private static IGenreLogic genreLogic;
+        private static IBookDataAcces bookData;
 
         static Program()
         {
+
             IKernel ninjectKernel = new StandardKernel();
             Config.RegisterServices(ninjectKernel);
-            bookLogic = ninjectKernel.Get<IBookLogic>();
-            genreLogic = ninjectKernel.Get<IGenreLogic>();
+            bookData = ninjectKernel.Get<IBookDataAcces>();
+            //bookLogic = ninjectKernel.Get<IBookLogic>();
+            //genreLogic = ninjectKernel.Get<IGenreLogic>();
         }
    
         static void Main(string[] args)
         {
-            while (true)
+            Book book=bookData.GetBookById(6);
+            Console.WriteLine($"{book.Id} {book.Name} {book.Year}");
+            /*foreach (Genre genre in book.Genres)
             {
-                Console.Clear();
-
-                try
-                {
-                    Console.WriteLine("1. Add book.");
-                    Console.WriteLine("2. Show books.");
-                    Console.WriteLine("3. Add genre.");
-                    Console.WriteLine("4. Show genres.");
-                    Console.WriteLine("0. Exit.");
-
-                    ConsoleKeyInfo entry = Console.ReadKey(intercept: true);
-                    switch (entry.Key)
-                    {
-                        case ConsoleKey.D1:
-                            AddBook();
-                            break;
-                        case ConsoleKey.D2:
-                            ShowBooks();
-                            break;
-                        case ConsoleKey.D3:
-                            AddGenre();
-                            break;
-                        case ConsoleKey.D4:
-                            ShowGenres();
-                            break;
-                        case ConsoleKey.D0:
-                            return;
-                        default:
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Error: {e.Message}");
-                    Console.ReadLine();
-                }
-
-
-            }
+                Console.WriteLine($"{genre.Name}");
+            }*/
         }
-
-        private static void ShowBooks()
-        {
-            var books = bookLogic.GetAllBooks();
-            foreach (var book in books)
-            {
-                Console.WriteLine($"{book.Id}. {book.Name} {book.Author} ({book.Genre.Name})");
-            }
-            Console.ReadLine();
-        }
-
-        private static void ShowGenres()
-        {
-            var genres = genreLogic.GetAllGenres();
-            foreach (var genre in genres)
-            {
-                Console.WriteLine($"{genre.Id} {genre.Name}");
-            }
-            Console.ReadLine();
-        }
-
-        private static void AddBook()
-        {
-            Console.WriteLine("Enter the book name: ");
-            string bookName = Console.ReadLine();
-            Console.WriteLine("Enter the book Author: ");
-            string bookAuthor = Console.ReadLine();
-            Console.WriteLine("Enter the book genre: ");
-            string genreName = Console.ReadLine();
-            bookLogic.AddBook(bookName, bookAuthor, genreName);
-
-
-            Console.ReadLine();
-        }
-
-        private static void AddGenre()
-        {
-            Console.WriteLine("Enter the genre name: ");
-            string genreName = Console.ReadLine();
-            genreLogic.AddGenre(genreName);
         
-            Console.ReadLine();
-        }
     }
 }
