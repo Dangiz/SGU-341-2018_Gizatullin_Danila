@@ -12,12 +12,9 @@ namespace BookSaver.DatabaseBookData
     public class DatabaseBookDao : IBookDataAcces
     {
         private readonly string connectionString;
-        private IGenreDataAcces _genreDao;
 
-        public DatabaseBookDao(IGenreDataAcces genreDao)
+        public DatabaseBookDao()
         {
-            connectionString = SetDataBaseConnection();
-            _genreDao = genreDao;
         }
 
         private string SetDataBaseConnection()
@@ -136,8 +133,7 @@ namespace BookSaver.DatabaseBookData
             int bookID = int.Parse(reader["ID_Book"].ToString());
             return new Book(bookID,
                             reader["Name"].ToString(),
-                            int.Parse(reader["Publishing_Year"].ToString()),
-                            () => _genreDao.GetGenresByBookId(bookID));
+                            int.Parse(reader["Publishing_Year"].ToString()));
         }
     }
 }

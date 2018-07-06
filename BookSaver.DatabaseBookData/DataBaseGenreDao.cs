@@ -11,11 +11,9 @@ namespace BookSaver.DatabaseBookData
     public class DataBaseGenreDao:IGenreDataAcces
     {
         private readonly string connectionString;
-        private IBookDataAcces _bookDao;
 
-        public DataBaseGenreDao(IBookDataAcces bookData)
+        public DataBaseGenreDao()
         {
-            _bookDao = bookData;
             connectionString = SetDataBaseConnection();
         }
 
@@ -67,7 +65,7 @@ namespace BookSaver.DatabaseBookData
         private Genre ConsctructGenreFromSelection(SqlDataReader reader)
         {
             int id = int.Parse(reader["ID_Genre"].ToString());
-            return new Genre(id, reader["Name"].ToString(), ()=>_bookDao.GetBooksByGenreID(id));
+            return new Genre(id, reader["Name"].ToString());
         }
     }
 }
