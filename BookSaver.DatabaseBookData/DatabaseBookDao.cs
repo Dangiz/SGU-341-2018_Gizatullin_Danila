@@ -20,16 +20,24 @@ namespace BookSaver.DatabaseBookData
 
         private Book ConstructBookBySelection(SqlDataReader reader)
         {
-            return new Book(int.Parse(reader["ID_Book"].ToString()),
+            return new Book((int)reader["ID_Book"],
                             reader["Name"].ToString(),
-                            int.Parse(reader["Publishing_Year"].ToString()));
+                            (int)reader["Publishing_Year"]);
         }
 
-        public bool AddBook(Book book)
+        private List<Book> ConstructBooksListBySelection(SqlCommand command)
         {
-            throw new NotImplementedException();
-        }
+            List<Book> books = new List<Book>();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    books.Add(ConstructBookBySelection(reader));
+                }
+            }
 
+            return books;
+        }
 
         public IEnumerable<Book> GetAllBooks()
         {
@@ -37,19 +45,11 @@ namespace BookSaver.DatabaseBookData
             using (SqlCommand command = new SqlCommand("dbo.Select_All_Books", con))
             {
                 command.CommandType = System.Data.CommandType.StoredProcedure;
-                List<Book> books = new List<Book>();
                 con.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        books.Add(ConstructBookBySelection(reader));
-                    }
-                }
-                return books;
+                return ConstructBooksListBySelection(command);
             }
         }
-
+    
         public Book GetBookById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -84,19 +84,72 @@ namespace BookSaver.DatabaseBookData
                     Value = id
                 });
                 con.Open();
-                List<Book> books = new List<Book>();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {                       
-                        books.Add(ConstructBookBySelection(reader));
-                    }
-
-                    return books;
-                }
+                return ConstructBooksListBySelection(command);
             }
         }
 
-        
+        public bool IsBookUnique(Book book,Publisher publisher)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Is_Book_Unique", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
+                {
+                    Value = book.Name
+                });
+                command.Parameters.Add(new SqlParameter("@Year", System.Data.SqlDbType.Int)
+                {
+                    Value = book.Year
+                });
+                command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = publisher.Id
+                });
+                var Result = new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int);
+                command.Parameters.Add(Result);
+                con.Open();
+                command.ExecuteNonQuery();
+                return (bool)Result.Value;
+            }
+        }
+
+        public void AddBook(Book book, int authorId, int genreId, int publisherId)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Book_Insert", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
+                {
+                    Value = book.Name
+                });
+                command.Parameters.Add(new SqlParameter("@Year", System.Data.SqlDbType.Int)
+                {
+                    Value = book.Year
+                });
+                command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = publisherId
+                });
+                command.Parameters.Add(new SqlParameter("@Genre_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = genreId
+                });
+                if (authorId != 0)
+                {
+                    command.Parameters.Add(new SqlParameter("@Author_ID", System.Data.SqlDbType.Int)
+                    {
+                        Value = authorId
+                    });
+                }
+                command.Parameters.Add(new SqlParameter("@Book_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = 0
+                });
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

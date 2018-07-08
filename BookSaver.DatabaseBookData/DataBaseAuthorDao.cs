@@ -20,28 +20,33 @@ namespace BookSaver.DatabaseBookData
 
         private Author ConstructAuthorBySelection(SqlDataReader reader)
         {
-            return new Author(int.Parse(reader["ID_Author"].ToString()),
+            return new Author((int)reader["ID_Author"],
                             reader["Name"].ToString(),
                             reader["Surname"].ToString());
         }
 
+        private List<Author> ConstructAuthorsListFromSelection(SqlCommand command)
+        {
+            List<Author> authors = new List<Author>();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    authors.Add(ConstructAuthorBySelection(reader));
+                }
+            }
+
+            return authors;
+        }
 
         public IEnumerable<Author> GetAllAuthors()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand("dbo.Select_All_Authors", con))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                List<Author> authors = new List<Author>();
+                command.CommandType = System.Data.CommandType.StoredProcedure;              
                 con.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        authors.Add(ConstructAuthorBySelection(reader));
-                    }
-                }
-                return authors;
+                return ConstructAuthorsListFromSelection(command);
             }
         }
 
@@ -49,5 +54,22 @@ namespace BookSaver.DatabaseBookData
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Author> GetAuthorsByBookId(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Authors_By_Book_Id", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Book_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                return ConstructAuthorsListFromSelection(command);
+            }
+        }
+
+       
     }
 }

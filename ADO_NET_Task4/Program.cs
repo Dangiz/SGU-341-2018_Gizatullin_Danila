@@ -34,14 +34,16 @@ namespace ADO_NET_Task4
             foreach(Book book in bookLogic.GetAllBooks())
             {
                 ShowBook(book);
+                Console.WriteLine("Authors:");
+                foreach (Author author in bookLogic.GetBookAuthors(book))
+                    ShowAuthor(author);
+                Console.WriteLine("Genres:");
                 foreach (Genre genre in bookLogic.GetBookGenres(book))
                     ShowGenre(genre);
-                Console.WriteLine();
+                Console.WriteLine();               
             }
+            bookLogic.AddBook("The Demon-Haunted World", 2013, null, null, null);
 
-            foreach (Author author in authorLogic.GetAllAuthors())
-                ShowAuthor(author);
-            
         }
 
         private static void ShowBook(Book book)

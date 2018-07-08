@@ -5,7 +5,7 @@ namespace BookSaver.LogicContracts
 {
     public interface IBookLogic
     {
-        Book AddBook(string name, string Author, string genre);
+        void AddBook(string name, int year, Author author, Genre genre, Publisher publisher);
         IEnumerable<Book> GetAllBooks();
         IEnumerable<Genre> GetBookGenres(Book book);
         IEnumerable<Author> GetBookAuthors(Book book);

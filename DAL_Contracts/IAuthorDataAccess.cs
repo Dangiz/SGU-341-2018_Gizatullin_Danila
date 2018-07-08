@@ -11,5 +11,6 @@ namespace BookSaver.DataContracts
     {
         IEnumerable<Author> GetAllAuthors();
         Author GetAuthorByID(int id);
+        IEnumerable<Author> GetAuthorsByBookId(int id);
     }
 }

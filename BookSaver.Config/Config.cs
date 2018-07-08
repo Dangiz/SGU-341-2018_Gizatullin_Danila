@@ -49,6 +49,9 @@ namespace BookSaver.Config
                         kernel
                             .Bind<IAuthorDataAccess>()
                             .To<DataBaseAuthorDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
+                        kernel
+                           .Bind<IPublisherDataAccess>()
+                           .To<DataBasePublisherDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
                         break;
                     }
                 default:

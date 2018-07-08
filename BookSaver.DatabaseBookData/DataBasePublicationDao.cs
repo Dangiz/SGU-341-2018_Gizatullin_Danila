@@ -4,10 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookSaver.DataContracts;
+using BookSaver.Entities;
 
 namespace BookSaver.DatabaseBookData
 {
-    public class DataBasePublicationDao:IPublicationDataAccess
+    public class DataBasePublicationDao : IPublicationDataAccess
     {
+        public IEnumerable<Publication> GetAllPublications()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

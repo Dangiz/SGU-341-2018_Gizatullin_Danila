@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for SQL Server, Версия 5.5.327.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/sql/studio
--- Дата скрипта: 7/6/2018 3:42:21 PM
+-- Дата скрипта: 7/9/2018 12:29:09 AM
 -- Версия сервера: 14.00.1000
 --
 
@@ -143,6 +143,17 @@ ON [PRIMARY]
 GO
 
 --
+-- Создать процедуру [dbo].[Select_Publisher_By_IDBook]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Publisher_By_IDBook]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Publisher_By_IDBook @ID_Book INT
+AS 
+SELECT p.ID_Publisher,p.Name,p.City,p.Street,p.House_Number FROM Book JOIN Publisher p ON Book.ID_Publisher = p.ID_Publisher WHERE ID_Book=@ID_Book
+GO
+
+--
 -- Создать процедуру [dbo].[Select_Book_By_Id]
 --
 GO
@@ -151,6 +162,33 @@ GO
 CREATE OR ALTER PROCEDURE dbo.Select_Book_By_Id @Book_ID INT
 AS BEGIN
 SELECT * FROM Book b WHERE b.ID_Book=@Book_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_All_Books]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_All_Books]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_All_Books
+AS 
+BEGIN
+  SELECT * FROM Book b
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Is_Book_Unique]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Is_Book_Unique]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Is_Book_Unique @Name VARCHAR(150),@Year INT,@Publisher_ID INT,@Result BIT OUTPUT
+AS BEGIN
+  IF EXISTS(SELECT * FROM Book b WHERE b.Name=@Name AND b.Publishing_Year=@Year AND b.ID_Publisher=@Publisher_ID)
+    SET @Result=0
+  ELSE SET @Result=1
 END
 GO
 
@@ -166,6 +204,18 @@ CREATE TABLE dbo.Author (
   CONSTRAINT PK_AUTHOR PRIMARY KEY CLUSTERED (ID_Author)
 )
 ON [PRIMARY]
+GO
+
+--
+-- Создать процедуру [dbo].[Select_All_Authors]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_All_Authors]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_All_Authors
+AS BEGIN
+  SELECT * FROM Author a
+END
 GO
 
 --
@@ -299,6 +349,32 @@ ON [PRIMARY]
 GO
 
 --
+-- Создать процедуру [dbo].[Select_Authors_By_Book_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Authors_By_Book_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Authors_By_Book_Id @Book_ID INT
+AS BEGIN
+  SELECT * FROM Book_To_Author bta INNER JOIN Author a ON bta.ID_Author = a.ID_Author WHERE bta.ID_Book=@Book_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Remove_Book_By_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Remove_Book_By_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Remove_Book_By_Id @Book_ID INT
+AS BEGIN
+  DELETE FROM Book_To_Author WHERE ID_Book=@Book_ID
+  DELETE FROM Book_To_Genre WHERE ID_Book=@Book_ID
+  DELETE FROM Book WHERE ID_Book=@Book_ID
+END
+GO
+
+--
 -- Создать процедуру [dbo].[Count_Book_Authors]
 --
 GO
@@ -347,6 +423,8 @@ SET IDENTITY_INSERT dbo.Author ON
 GO
 INSERT dbo.Author(ID_Author, Name, Surname) VALUES (2, N'Carl', N'Sagan')
 INSERT dbo.Author(ID_Author, Name, Surname) VALUES (3, N'Stanley', N'Dermott')
+INSERT dbo.Author(ID_Author, Name, Surname) VALUES (4, N'Boris', N'Strugatsky')
+INSERT dbo.Author(ID_Author, Name, Surname) VALUES (5, N'Arkady', N'Strugatsky')
 GO
 SET IDENTITY_INSERT dbo.Author OFF
 GO
@@ -356,6 +434,8 @@ GO
 SET IDENTITY_INSERT dbo.Book ON
 GO
 INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (6, N'Contact', 2014, 1)
+INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (7, N'Hard to Be a God', 1997, 1)
+INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (15, N'The Demon-Haunted World', 2013, 1)
 GO
 SET IDENTITY_INSERT dbo.Book OFF
 GO
@@ -363,20 +443,28 @@ GO
 -- Вывод данных для таблицы Book_To_Author
 --
 INSERT dbo.Book_To_Author VALUES (6, 2, 1)
+INSERT dbo.Book_To_Author VALUES (7, 5, 1)
+INSERT dbo.Book_To_Author VALUES (7, 4, 2)
+INSERT dbo.Book_To_Author VALUES (15, 2, 1)
 GO
 -- 
 -- Вывод данных для таблицы Book_To_Genre
 --
 INSERT dbo.Book_To_Genre VALUES (6, 1)
 INSERT dbo.Book_To_Genre VALUES (6, 4)
+INSERT dbo.Book_To_Genre VALUES (7, 1)
+INSERT dbo.Book_To_Genre VALUES (15, 6)
 GO
 -- 
 -- Вывод данных для таблицы Genre
 --
 SET IDENTITY_INSERT dbo.Genre ON
 GO
+INSERT dbo.Genre(ID_Genre, Name) VALUES (7, N'Detective')
+INSERT dbo.Genre(ID_Genre, Name) VALUES (5, N'Fantasy')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (4, N'Hard Sci-Fi')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (2, N'Horror')
+INSERT dbo.Genre(ID_Genre, Name) VALUES (6, N'Popular Science')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (1, N'Sci-Fi')
 GO
 SET IDENTITY_INSERT dbo.Genre OFF

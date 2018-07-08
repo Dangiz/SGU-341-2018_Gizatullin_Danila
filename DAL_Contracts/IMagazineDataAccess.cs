@@ -8,5 +8,6 @@ namespace BookSaver.DataContracts
 {
     public interface IMagazineDataAccess
     {
+        
     }
 }

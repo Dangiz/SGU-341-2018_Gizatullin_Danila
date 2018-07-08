@@ -17,6 +17,11 @@ namespace BookSaver.DatabaseBookData
             this.connectionString = connectionString;
         }
 
+        private Genre ConsctructGenreFromSelection(SqlDataReader reader)
+        {
+            return new Genre((int)reader["ID_Genre"], reader["Name"].ToString());
+        }
+
         public IEnumerable<Genre> GetAllGenres()
         {
             throw new NotImplementedException();
@@ -50,10 +55,9 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
-        private Genre ConsctructGenreFromSelection(SqlDataReader reader)
+        public IEnumerable<Genre> GetGenreByName(string name)
         {
-            int id = int.Parse(reader["ID_Genre"].ToString());
-            return new Genre(id, reader["Name"].ToString());
+            throw new NotImplementedException();
         }
     }
 }
