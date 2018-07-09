@@ -9,6 +9,7 @@ namespace BookSaver.LogicContracts
 {
     public interface IPublicationLogic
     {
+        IEnumerable<Publication> GetAllPublications();
         IEnumerable<Author> GetPublicationAuthors(Publication publication);
         Magazine GetPublicationMagazine(Publication publication);
     }

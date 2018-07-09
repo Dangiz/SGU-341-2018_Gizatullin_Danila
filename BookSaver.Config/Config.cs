@@ -19,9 +19,12 @@ namespace BookSaver.Config
             kernel
                 .Bind<IAuthorLogic>()
                 .To<AuthorLogic>();
-            //kernel
-            //    .Bind<IGenreLogic>()
-            //    .To<GenreLogic>();
+            kernel
+                .Bind<IGenreLogic>()
+                .To<GenreLogic>();
+            kernel
+                .Bind<IPublicationLogic>()
+                .To<PublicationLogic>();
 
             switch (ConfigurationManager.AppSettings["DataBaseAccesType"])
             {
@@ -52,6 +55,9 @@ namespace BookSaver.Config
                         kernel
                            .Bind<IPublisherDataAccess>()
                            .To<DataBasePublisherDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
+                        kernel
+                          .Bind<IPublicationDataAccess>()
+                          .To<DataBasePublicationDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
                         break;
                     }
                 default:

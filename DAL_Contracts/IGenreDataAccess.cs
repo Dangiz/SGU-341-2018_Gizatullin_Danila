@@ -9,7 +9,7 @@ namespace BookSaver.DataContracts
 {
     public interface IGenreDataAcces
     {
-        bool AddGenre(Genre genre);
+        void AddGenre(Genre genre);
         IEnumerable<Genre> GetAllGenres();
         IEnumerable<Genre> GetGenresByBookId(int id);
         IEnumerable<Genre> GetGenreByName(string name);

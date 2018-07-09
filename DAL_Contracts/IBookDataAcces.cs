@@ -9,6 +9,7 @@ namespace BookSaver.DataContracts
         Book GetBookById(int id);
         IEnumerable<Book> GetAllBooks();
         IEnumerable<Book> GetBooksByGenreID(int id);
+        IEnumerable<Book> GetBooksByAuthorID(int id);
         bool IsBookUnique(Book book,int publisherId);
         void RemoveBookById(int id);
     }

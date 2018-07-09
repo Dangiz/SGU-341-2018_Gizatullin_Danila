@@ -11,15 +11,16 @@ namespace ADO_NET_Task4
     {
         private static IAuthorLogic _authorLogic;
         private static IBookLogic _bookLogic;
-        //private static IGenreLogic genreLogic;
+        private static IGenreLogic _genreLogic;
+        private static IPublicationLogic _publicationLogic;
         static Program()
         {
-
             IKernel ninjectKernel = new StandardKernel();
             Config.RegisterServices(ninjectKernel);
             _bookLogic = ninjectKernel.Get<IBookLogic>();
             _authorLogic = ninjectKernel.Get<IAuthorLogic>();
-            //genreLogic = ninjectKernel.Get<IGenreLogic>();
+            _genreLogic = ninjectKernel.Get<IGenreLogic>();
+            _publicationLogic = ninjectKernel.Get<IPublicationLogic>();
         }
 
 
@@ -37,13 +38,21 @@ namespace ADO_NET_Task4
                         ShowGenre(genre);
                     Console.WriteLine();
                 }
-            _bookLogic.RemoveBookAtId(18);
+
+                foreach(Publication publication in _authorLogic.GetAuhtorPublications(new Author(2,"","")))
+                {
+                    ShowPublication(publication);
+                }
 
         }
 
         private static void ShowBook(Book book)
         {
             Console.WriteLine($"{book.Id} {book.Name} {book.Year}");
+        }
+        private static void ShowPublication(Publication publication)
+        {
+            Console.WriteLine($"{publication.Id} {publication.Name} {publication.Year}");
         }
         private static void ShowGenre(Genre genre)
         {

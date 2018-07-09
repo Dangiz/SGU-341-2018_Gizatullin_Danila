@@ -11,7 +11,7 @@ namespace BookSaver.LogicContracts
     {
         IEnumerable<Author> GetAllAuthors();
         IEnumerable<Publication> GetAuhtorPublications(Author author);
-        IEnumerable<Book> GetAuthorBooks(Author author);
+        IEnumerable<Book> GetAuthorBooks(int authorId);
         void AddAuthor(string name, string surname);
     }
 }

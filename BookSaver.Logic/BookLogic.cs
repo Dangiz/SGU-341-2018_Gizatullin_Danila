@@ -65,12 +65,27 @@ namespace BookSaver.Logic
 
         public IEnumerable<Author> GetBookAuthors(Book book)
         {
-            return _authorDao.GetAuthorsByBookId(book.Id);
+            if (_bookDao.GetBookById(book.Id) != null)
+            {
+                return _authorDao.GetAuthorsByBookId(book.Id);
+            }
+            else
+            {
+                throw new ArgumentException("No book with such id");
+            }
+
         }
 
         public IEnumerable<Genre> GetBookGenres(Book book)
         {
-            return _genreDao.GetGenresByBookId(book.Id);
+            if (_bookDao.GetBookById(book.Id) != null)
+            {
+                return _genreDao.GetGenresByBookId(book.Id);
+            }
+            else
+            {
+                throw new ArgumentException("No book with such id");
+            }
         }
 
         public void RemoveBookAtId(int id)
@@ -80,6 +95,11 @@ namespace BookSaver.Logic
                 _bookDao.RemoveBookById(id);
                 _authorDao.RemoveAllLazyAuthors();
             }
+            else
+            {
+                throw new ArgumentException("No book with this Id");
+            }
         }
+
     }
 }

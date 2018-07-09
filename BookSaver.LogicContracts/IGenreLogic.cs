@@ -9,7 +9,7 @@ namespace BookSaver.LogicContracts
 {
     public interface IGenreLogic
     {
-        Genre AddGenre(string name);
+        void AddGenre(string name);
         IEnumerable<Genre> GetAllGenres();
         IEnumerable<Book> GetGenreBooks(Genre genre);
     }

@@ -1,9 +1,7 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
 using BookSaver.DataContracts;
 using BookSaver.Entities;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 
@@ -76,7 +74,7 @@ namespace BookSaver.DatabaseBookData
         public IEnumerable<Book> GetBooksByGenreID(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand("dbo.Select_Books_By_Genre", con))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Books_By_Genre_ID", con))
             {
                 command.CommandType = System.Data.CommandType.StoredProcedure;
                 command.Parameters.Add(new SqlParameter("@Genre_ID", System.Data.SqlDbType.Int)
@@ -170,5 +168,19 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
+        public IEnumerable<Book> GetBooksByAuthorID(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Books_By_Author_ID", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Author_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                return ConstructBooksListBySelection(command);
+            }
+        }
     }
 }

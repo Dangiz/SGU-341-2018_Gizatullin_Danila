@@ -26,11 +26,26 @@ namespace BookSaver.DatabaseBookData
         {
             throw new NotImplementedException();
         }
-        public bool AddGenre(Genre genre)
-        {
-            throw new NotImplementedException();
-        }
 
+        public void AddGenre(Genre genre)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Genre_Insert", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
+                {
+                    Value = genre.Name
+                });
+                command.Parameters.Add(new SqlParameter("@Genre_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = 0,
+                    Direction=ParameterDirection.Output
+                });
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+        }
 
         public IEnumerable<Genre> GetGenresByBookId(int id)
         {
