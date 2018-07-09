@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for SQL Server, Версия 5.5.327.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/sql/studio
--- Дата скрипта: 7/9/2018 12:29:09 AM
+-- Дата скрипта: 7/9/2018 1:15:55 PM
 -- Версия сервера: 14.00.1000
 --
 
@@ -30,6 +30,18 @@ ON [PRIMARY]
 GO
 
 SET QUOTED_IDENTIFIER, ANSI_NULLS ON
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Publisher_By_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Publisher_By_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Publisher_By_Id @Publisher_ID INT
+AS BEGIN
+  SELECT * FROM Publisher p WHERE p.ID_Publisher=@Publisher_ID
+END
 GO
 
 --
@@ -108,6 +120,19 @@ CREATE TABLE dbo.Genre (
   CONSTRAINT KEY_Genre_Name UNIQUE (Name)
 )
 ON [PRIMARY]
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Genre_By_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Genre_By_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Genre_By_Id @Genre_ID INT
+AS 
+BEGIN
+  SELECT * FROM Genre g WHERE g.ID_Genre=@Genre_ID
+END
 GO
 
 --
@@ -207,6 +232,19 @@ ON [PRIMARY]
 GO
 
 --
+-- Создать процедуру [dbo].[Select_Author_By_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Author_By_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Author_By_Id @Author_ID INT
+AS 
+BEGIN
+  SELECT * FROM Author a WHERE a.ID_Author=@Author_ID
+END
+GO
+
+--
 -- Создать процедуру [dbo].[Select_All_Authors]
 --
 GO
@@ -224,11 +262,11 @@ GO
 GO
 PRINT (N'Создать процедуру [dbo].[Author_Insert]')
 GO
-CREATE OR ALTER PROCEDURE dbo.Author_Insert @Author_Name VARCHAR(150), @Author_Surname VARCHAR(150),@ID_Author INT OUTPUT
+CREATE OR ALTER PROCEDURE dbo.Author_Insert @Author_Name VARCHAR(150), @Author_Surname VARCHAR(150),@Author_ID INT OUTPUT
 AS 
 BEGIN
        INSERT INTO Author VALUES (@Author_Name,@Author_Surname)
-       SET @ID_Author = SCOPE_IDENTITY()
+       SET @Author_ID = SCOPE_IDENTITY()
 END
 GO
 
@@ -425,6 +463,7 @@ INSERT dbo.Author(ID_Author, Name, Surname) VALUES (2, N'Carl', N'Sagan')
 INSERT dbo.Author(ID_Author, Name, Surname) VALUES (3, N'Stanley', N'Dermott')
 INSERT dbo.Author(ID_Author, Name, Surname) VALUES (4, N'Boris', N'Strugatsky')
 INSERT dbo.Author(ID_Author, Name, Surname) VALUES (5, N'Arkady', N'Strugatsky')
+INSERT dbo.Author(ID_Author, Name, Surname) VALUES (6, N'Stanislaw', N'Lem')
 GO
 SET IDENTITY_INSERT dbo.Author OFF
 GO
@@ -435,7 +474,7 @@ SET IDENTITY_INSERT dbo.Book ON
 GO
 INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (6, N'Contact', 2014, 1)
 INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (7, N'Hard to Be a God', 1997, 1)
-INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (15, N'The Demon-Haunted World', 2013, 1)
+INSERT dbo.Book(ID_Book, Name, Publishing_Year, ID_Publisher) VALUES (18, N'Solaris', 2014, 1)
 GO
 SET IDENTITY_INSERT dbo.Book OFF
 GO
@@ -445,7 +484,7 @@ GO
 INSERT dbo.Book_To_Author VALUES (6, 2, 1)
 INSERT dbo.Book_To_Author VALUES (7, 5, 1)
 INSERT dbo.Book_To_Author VALUES (7, 4, 2)
-INSERT dbo.Book_To_Author VALUES (15, 2, 1)
+INSERT dbo.Book_To_Author VALUES (18, 6, 1)
 GO
 -- 
 -- Вывод данных для таблицы Book_To_Genre
@@ -453,7 +492,7 @@ GO
 INSERT dbo.Book_To_Genre VALUES (6, 1)
 INSERT dbo.Book_To_Genre VALUES (6, 4)
 INSERT dbo.Book_To_Genre VALUES (7, 1)
-INSERT dbo.Book_To_Genre VALUES (15, 6)
+INSERT dbo.Book_To_Genre VALUES (18, 4)
 GO
 -- 
 -- Вывод данных для таблицы Genre

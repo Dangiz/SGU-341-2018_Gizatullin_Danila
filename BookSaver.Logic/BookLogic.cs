@@ -4,6 +4,7 @@ using System.Linq;
 using BookSaver.Entities;
 using BookSaver.LogicContracts;
 using BookSaver.DataContracts;
+using System.Text.RegularExpressions;
 
 namespace BookSaver.Logic
 {
@@ -22,10 +23,39 @@ namespace BookSaver.Logic
             _publisherDao = publisherDao;
         }
 
+        public void AddBook(string name, int year, int authorId, int genreId, int publisherId)
+        { 
 
-        public void AddBook(string name, int year, Author author, Genre genre,Publisher publisher)
-        {
-            _bookDao.AddBook(new Book() { Name = name, Year = year }, author.Id, genre.Id, publisher.Id);
+            if(_authorDao.GetAuthorByID(authorId)==null)
+            {
+                throw new ArgumentException("Author with this Id does not exist");
+            }
+            if (_genreDao.GetGenreById(genreId)== null)
+            {
+                throw new ArgumentException("Genre with this Id does not exist");
+            }
+            if (_publisherDao.GetPublisherById(publisherId) == null)
+            {
+                throw new ArgumentException("Publisher with this Id does not exist");
+            }
+            if (String.IsNullOrEmpty(name) || name.Length > 150 || Regex.Match(name,@"\A[a-zA-Z0-9 ]+\Z").Length!=name.Length)
+            {
+                throw new ArgumentException();
+            }
+
+            if (year / 1000 != 2 & year / 1000 != 1)
+            {
+                throw new ArgumentException();
+            }
+
+            Book book = new Book() { Name = name, Year = year };
+
+            if(!_bookDao.IsBookUnique(book,publisherId))
+            {
+                throw new ArgumentException();
+            }
+
+            _bookDao.AddBook(book, authorId, genreId, publisherId);
         }
 
         public IEnumerable<Book> GetAllBooks()
@@ -41,6 +71,15 @@ namespace BookSaver.Logic
         public IEnumerable<Genre> GetBookGenres(Book book)
         {
             return _genreDao.GetGenresByBookId(book.Id);
+        }
+
+        public void RemoveBookAtId(int id)
+        {
+            if (_bookDao.GetBookById(id) != null)
+            {
+                _bookDao.RemoveBookById(id);
+                _authorDao.RemoveAllLazyAuthors();
+            }
         }
     }
 }

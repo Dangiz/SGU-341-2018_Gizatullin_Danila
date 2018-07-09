@@ -13,6 +13,7 @@ namespace BookSaver.DataContracts
         IEnumerable<Genre> GetAllGenres();
         IEnumerable<Genre> GetGenresByBookId(int id);
         IEnumerable<Genre> GetGenreByName(string name);
+        Genre GetGenreById(int id);
 
     }
 }

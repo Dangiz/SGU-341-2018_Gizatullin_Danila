@@ -18,7 +18,7 @@ namespace BookSaver.DatabaseBookData
             this.connectionString = connectionString;
         }
 
-        private Author ConstructAuthorBySelection(SqlDataReader reader)
+        private Author ConstructAuthorFromSelection(SqlDataReader reader)
         {
             return new Author((int)reader["ID_Author"],
                             reader["Name"].ToString(),
@@ -32,7 +32,7 @@ namespace BookSaver.DatabaseBookData
             {
                 while (reader.Read())
                 {
-                    authors.Add(ConstructAuthorBySelection(reader));
+                    authors.Add(ConstructAuthorFromSelection(reader));
                 }
             }
 
@@ -52,7 +52,24 @@ namespace BookSaver.DatabaseBookData
 
         public Author GetAuthorByID(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Author_By_Id", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Author_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return ConstructAuthorFromSelection(reader);
+                    }
+                    else return null;
+                }
+            }
         }
 
         public IEnumerable<Author> GetAuthorsByBookId(int id)
@@ -70,6 +87,38 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
-       
+        public void AddAuthor(Author author)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Author_Insert", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Author_Name", System.Data.SqlDbType.VarChar)
+                {
+                    Value = author.Name
+                });
+                command.Parameters.Add(new SqlParameter("@Author_Surname", System.Data.SqlDbType.VarChar)
+                {
+                    Value = author.Surname
+                });
+                command.Parameters.Add(new SqlParameter("@Author_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = 0
+                });
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public void RemoveAllLazyAuthors()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Remove_Authors_Without_Any_Publications_Or_Books", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+        }
     }
 }

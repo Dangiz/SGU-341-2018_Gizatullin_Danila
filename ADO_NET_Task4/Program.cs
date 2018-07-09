@@ -9,21 +9,16 @@ namespace ADO_NET_Task4
 {
     class Program
     {
-        private static IAuthorLogic authorLogic;
-        private static IBookLogic bookLogic;
+        private static IAuthorLogic _authorLogic;
+        private static IBookLogic _bookLogic;
         //private static IGenreLogic genreLogic;
-
-        private static IBookDataAcces bookData;
-
-
         static Program()
         {
 
             IKernel ninjectKernel = new StandardKernel();
             Config.RegisterServices(ninjectKernel);
-            bookData = ninjectKernel.Get<IBookDataAcces>();
-            bookLogic = ninjectKernel.Get<IBookLogic>();
-            authorLogic = ninjectKernel.Get<IAuthorLogic>();
+            _bookLogic = ninjectKernel.Get<IBookLogic>();
+            _authorLogic = ninjectKernel.Get<IAuthorLogic>();
             //genreLogic = ninjectKernel.Get<IGenreLogic>();
         }
 
@@ -31,18 +26,18 @@ namespace ADO_NET_Task4
    
         static void Main(string[] args)
         {
-            foreach(Book book in bookLogic.GetAllBooks())
-            {
-                ShowBook(book);
-                Console.WriteLine("Authors:");
-                foreach (Author author in bookLogic.GetBookAuthors(book))
-                    ShowAuthor(author);
-                Console.WriteLine("Genres:");
-                foreach (Genre genre in bookLogic.GetBookGenres(book))
-                    ShowGenre(genre);
-                Console.WriteLine();               
-            }
-            bookLogic.AddBook("The Demon-Haunted World", 2013, null, null, null);
+                foreach (Book book in _bookLogic.GetAllBooks())
+                {
+                    ShowBook(book);
+                    Console.WriteLine("Authors:");
+                    foreach (Author author in _bookLogic.GetBookAuthors(book))
+                        ShowAuthor(author);
+                    Console.WriteLine("Genres:");
+                    foreach (Genre genre in _bookLogic.GetBookGenres(book))
+                        ShowGenre(genre);
+                    Console.WriteLine();
+                }
+            _bookLogic.RemoveBookAtId(18);
 
         }
 

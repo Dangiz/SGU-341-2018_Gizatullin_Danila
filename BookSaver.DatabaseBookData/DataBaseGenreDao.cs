@@ -59,5 +59,28 @@ namespace BookSaver.DatabaseBookData
         {
             throw new NotImplementedException();
         }
+
+        public Genre GetGenreById(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Genre_By_Id", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Genre_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return ConsctructGenreFromSelection(reader);
+                    }
+                    else return null;
+                }
+
+            }
+        }
     }
 }

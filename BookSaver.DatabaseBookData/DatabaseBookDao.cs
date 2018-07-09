@@ -88,7 +88,7 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
-        public bool IsBookUnique(Book book,Publisher publisher)
+        public bool IsBookUnique(Book book,int publisherId)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand command = new SqlCommand("dbo.Is_Book_Unique", con))
@@ -104,9 +104,12 @@ namespace BookSaver.DatabaseBookData
                 });
                 command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
                 {
-                    Value = publisher.Id
+                    Value = publisherId
                 });
-                var Result = new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int);
+                var Result = new SqlParameter("@Result", System.Data.SqlDbType.Bit)
+                {
+                    Direction = ParameterDirection.Output
+                };
                 command.Parameters.Add(Result);
                 con.Open();
                 command.ExecuteNonQuery();
@@ -151,5 +154,21 @@ namespace BookSaver.DatabaseBookData
                 command.ExecuteNonQuery();
             }
         }
+
+        public void RemoveBookById(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Remove_Book_By_Id", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Book_ID", SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
     }
 }

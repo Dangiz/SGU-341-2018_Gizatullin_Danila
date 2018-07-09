@@ -46,5 +46,27 @@ namespace BookSaver.DatabaseBookData
                     }
             }
         }
+
+        public Publisher GetPublisherById(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_Publisher_By_Id", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
+                {
+                    Value = id
+                });
+                con.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return ConsctructPublisherFromSelection(reader);
+                    }
+                    else return null;
+                }
+            }
+        }
     }
 }

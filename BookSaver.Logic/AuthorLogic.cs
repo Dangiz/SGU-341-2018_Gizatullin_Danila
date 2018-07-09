@@ -21,6 +21,12 @@ namespace BookSaver.Logic
             _authorDao = authorDao;
         }
 
+        public void AddAuthor(string name, string surname)
+        {
+            Author author = new Author() { Name = name, Surname = surname };
+            _authorDao.AddAuthor(author);
+        }
+
         public IEnumerable<Author> GetAllAuthors()
         {
             return _authorDao.GetAllAuthors();
