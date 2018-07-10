@@ -1,13 +1,12 @@
-﻿using System;
+﻿using BookSaver.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookSaver.DataContracts
 {
     public interface IMagazineDataAccess
     {
-        
+        Magazine GetMagazineById(int id);
+        IEnumerable<Magazine> GetAllMagazines();
+        Magazine GetMagazineByPublicationId();
     }
 }

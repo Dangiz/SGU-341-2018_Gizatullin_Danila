@@ -1,9 +1,8 @@
-﻿using System;
-using Ninject;
-using BookSaver.LogicContracts;
-using BookSaver.Config;
-using BookSaver.DataContracts;
+﻿using BookSaver.Config;
 using BookSaver.Entities;
+using BookSaver.LogicContracts;
+using Ninject;
+using System;
 
 namespace ADO_NET_Task4
 {
@@ -13,6 +12,8 @@ namespace ADO_NET_Task4
         private static IBookLogic _bookLogic;
         private static IGenreLogic _genreLogic;
         private static IPublicationLogic _publicationLogic;
+        private static IMagazineLogic _magazineLogic;
+        private static IPublisherLogic _publisherLogic;
         static Program()
         {
             IKernel ninjectKernel = new StandardKernel();
@@ -21,6 +22,8 @@ namespace ADO_NET_Task4
             _authorLogic = ninjectKernel.Get<IAuthorLogic>();
             _genreLogic = ninjectKernel.Get<IGenreLogic>();
             _publicationLogic = ninjectKernel.Get<IPublicationLogic>();
+            _magazineLogic = ninjectKernel.Get<IMagazineLogic>();
+            _publisherLogic = ninjectKernel.Get<IPublisherLogic>();
         }
 
 
@@ -31,19 +34,20 @@ namespace ADO_NET_Task4
                 {
                     ShowBook(book);
                     Console.WriteLine("Authors:");
-                    foreach (Author author in _bookLogic.GetBookAuthors(book))
+                    foreach (Author author in _bookLogic.GetBookAuthors(book.Id))
                         ShowAuthor(author);
                     Console.WriteLine("Genres:");
-                    foreach (Genre genre in _bookLogic.GetBookGenres(book))
+                    foreach (Genre genre in _bookLogic.GetBookGenres(book.Id))
                         ShowGenre(genre);
                     Console.WriteLine();
                 }
 
-                foreach(Publication publication in _authorLogic.GetAuhtorPublications(new Author(2,"","")))
+                foreach(Publication publication in _authorLogic.GetAuhtorPublications(2))
                 {
                     ShowPublication(publication);
                 }
 
+            _genreLogic.AddGenre("History");
         }
 
         private static void ShowBook(Book book)

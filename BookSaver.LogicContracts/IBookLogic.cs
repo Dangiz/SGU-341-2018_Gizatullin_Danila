@@ -7,8 +7,8 @@ namespace BookSaver.LogicContracts
     {
         void AddBook(string name, int year, int authorId, int genreId, int publisherId);
         IEnumerable<Book> GetAllBooks();
-        IEnumerable<Genre> GetBookGenres(Book book);
-        IEnumerable<Author> GetBookAuthors(Book book);
+        IEnumerable<Genre> GetBookGenres(int bookId);
+        IEnumerable<Author> GetBookAuthors(int bookId);
         void RemoveBookAtId(int id);
     }
 }

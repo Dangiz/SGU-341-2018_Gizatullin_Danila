@@ -1,9 +1,5 @@
-﻿using System;
+﻿using BookSaver.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookSaver.Entities;
 
 namespace BookSaver.DataContracts
 {
@@ -11,5 +7,6 @@ namespace BookSaver.DataContracts
     {
         Publisher GetPublisherByBookId(int id);
         Publisher GetPublisherById(int id);
+        IEnumerable<Publisher> GetAllPublishers();
     }
 }

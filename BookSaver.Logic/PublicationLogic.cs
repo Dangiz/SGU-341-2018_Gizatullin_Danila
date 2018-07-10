@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookSaver.DataContracts;
 using BookSaver.Entities;
 using BookSaver.LogicContracts;
@@ -23,12 +20,12 @@ namespace BookSaver.Logic
             return _publicationDao.GetAllPublications();
         }
 
-        public IEnumerable<Author> GetPublicationAuthors(Publication publication)
+        public IEnumerable<Author> GetPublicationAuthors(int publicationId)
         {
             throw new NotImplementedException();
         }
 
-        public Magazine GetPublicationMagazine(Publication publication)
+        public Magazine GetPublicationMagazine(int publicationId)
         {
             throw new NotImplementedException();
         }

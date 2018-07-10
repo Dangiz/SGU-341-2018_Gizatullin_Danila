@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BookSaver.Entities;
 using BookSaver.LogicContracts;
 using BookSaver.DataContracts;
@@ -63,11 +62,11 @@ namespace BookSaver.Logic
             return _bookDao.GetAllBooks();
         }
 
-        public IEnumerable<Author> GetBookAuthors(Book book)
+        public IEnumerable<Author> GetBookAuthors(int bookId)
         {
-            if (_bookDao.GetBookById(book.Id) != null)
+            if (_bookDao.GetBookById(bookId) != null)
             {
-                return _authorDao.GetAuthorsByBookId(book.Id);
+                return _authorDao.GetAuthorsByBookId(bookId);
             }
             else
             {
@@ -76,11 +75,11 @@ namespace BookSaver.Logic
 
         }
 
-        public IEnumerable<Genre> GetBookGenres(Book book)
+        public IEnumerable<Genre> GetBookGenres(int bookId)
         {
-            if (_bookDao.GetBookById(book.Id) != null)
+            if (_bookDao.GetBookById(bookId) != null)
             {
-                return _genreDao.GetGenresByBookId(book.Id);
+                return _genreDao.GetGenresByBookId(bookId);
             }
             else
             {

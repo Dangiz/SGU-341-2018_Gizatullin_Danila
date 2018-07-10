@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for SQL Server, Версия 5.5.327.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/sql/studio
--- Дата скрипта: 7/9/2018 4:06:13 PM
+-- Дата скрипта: 7/10/2018 1:16:48 PM
 -- Версия сервера: 14.00.1000
 --
 
@@ -41,6 +41,19 @@ GO
 CREATE OR ALTER PROCEDURE dbo.Select_Publisher_By_Id @Publisher_ID INT
 AS BEGIN
   SELECT * FROM Publisher p WHERE p.ID_Publisher=@Publisher_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_All_Publishers]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_All_Publishers]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_All_Publishers
+AS 
+BEGIN
+  SELECT * FROM Publisher p
 END
 GO
 
@@ -108,6 +121,19 @@ ON [PRIMARY]
 GO
 
 --
+-- Создать процедуру [dbo].[Select_AllMagazines]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_AllMagazines]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_AllMagazines
+AS 
+BEGIN
+  SELECT * FROM Magazine m
+END
+GO
+
+--
 -- Создать процедуру [dbo].[Magazine_Insert]
 --
 GO
@@ -149,12 +175,27 @@ END
 GO
 
 --
+-- Создать процедуру [dbo].[Is_Genre_Unique]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Is_Genre_Unique]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Is_Genre_Unique @Name VARCHAR(70),@Result BIT OUTPUT
+AS 
+BEGIN
+  IF EXISTS(SELECT * FROM Genre g WHERE  g.Name=@Name)
+    SET @Result=0
+  ELSE SET @Result=1
+END
+GO
+
+--
 -- Создать процедуру [dbo].[Genre_Insert]
 --
 GO
 PRINT (N'Создать процедуру [dbo].[Genre_Insert]')
 GO
-CREATE OR ALTER PROCEDURE dbo.Genre_Insert @Name VARCHAR,@Genre_ID INTEGER OUTPUT
+CREATE OR ALTER PROCEDURE dbo.Genre_Insert @Name VARCHAR(70),@Genre_ID INTEGER OUTPUT
 AS 
 BEGIN
       INSERT INTO Genre VALUES(@Name)
@@ -546,10 +587,11 @@ SET IDENTITY_INSERT dbo.Genre ON
 GO
 INSERT dbo.Genre(ID_Genre, Name) VALUES (7, N'Detective')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (5, N'Fantasy')
-INSERT dbo.Genre(ID_Genre, Name) VALUES (4, N'Hard Sci-Fi')
+INSERT dbo.Genre(ID_Genre, Name) VALUES (4, N'Hard Science Fiction')
+INSERT dbo.Genre(ID_Genre, Name) VALUES (15, N'History')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (2, N'Horror')
 INSERT dbo.Genre(ID_Genre, Name) VALUES (6, N'Popular Science')
-INSERT dbo.Genre(ID_Genre, Name) VALUES (1, N'Sci-Fi')
+INSERT dbo.Genre(ID_Genre, Name) VALUES (1, N'Science Fiction')
 GO
 SET IDENTITY_INSERT dbo.Genre OFF
 GO

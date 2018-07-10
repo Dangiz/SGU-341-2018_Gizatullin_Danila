@@ -2,7 +2,6 @@
 using BookSaver.Entities;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -44,6 +43,27 @@ namespace BookSaver.DatabaseBookData
                 });
                 con.Open();
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public bool IsGenreUnique(Genre genre)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Is_Genre_Unique", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@Name", System.Data.SqlDbType.VarChar)
+                {
+                    Value = genre.Name
+                });
+                var Result = new SqlParameter("@Result", System.Data.SqlDbType.Bit)
+                {
+                    Direction = ParameterDirection.Output
+                };
+                command.Parameters.Add(Result);
+                con.Open();
+                command.ExecuteNonQuery();
+                return (bool)Result.Value;
             }
         }
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BookSaver.Entities
+﻿namespace BookSaver.Entities
 {
     public class Magazine
     {

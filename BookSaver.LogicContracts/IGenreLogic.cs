@@ -1,9 +1,5 @@
 ﻿using BookSaver.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookSaver.LogicContracts
 {
@@ -11,6 +7,6 @@ namespace BookSaver.LogicContracts
     {
         void AddGenre(string name);
         IEnumerable<Genre> GetAllGenres();
-        IEnumerable<Book> GetGenreBooks(Genre genre);
+        IEnumerable<Book> GetGenreBooks(int genreId);
     }
 }

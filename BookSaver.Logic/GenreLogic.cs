@@ -3,10 +3,7 @@ using BookSaver.Entities;
 using BookSaver.LogicContracts;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace BookSaver.Logic
 {
@@ -27,7 +24,12 @@ namespace BookSaver.Logic
             {
                 throw new ArgumentException("Wrong Genre name format");
             }
-            _genreDao.AddGenre(new Genre() { Name = name });
+            Genre genre=new Genre() { Name = name };
+            if(!_genreDao.IsGenreUnique(genre))
+            {
+                throw new ArgumentException("Genre with this name already exist");
+            }
+            _genreDao.AddGenre(genre);
         }
 
         public IEnumerable<Genre> GetAllGenres()
@@ -35,11 +37,11 @@ namespace BookSaver.Logic
             return _genreDao.GetAllGenres();
         }
 
-        public IEnumerable<Book> GetGenreBooks(Genre genre)
+        public IEnumerable<Book> GetGenreBooks(int genreId)
         {
-            if (_genreDao.GetGenreById(genre.Id) != null)
+            if (_genreDao.GetGenreById(genreId) != null)
             {
-                return _bookDao.GetBooksByGenreID(genre.Id);
+                return _bookDao.GetBooksByGenreID(genreId);
             }
             else throw new ArgumentException("No Genre with such id");
         }

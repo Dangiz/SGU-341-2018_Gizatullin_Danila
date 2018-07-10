@@ -1,5 +1,4 @@
 ﻿
-
 namespace BookSaver.Entities
 {
     public class Publisher

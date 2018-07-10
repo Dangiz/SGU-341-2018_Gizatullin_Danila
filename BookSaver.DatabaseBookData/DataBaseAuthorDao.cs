@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using BookSaver.DataContracts;
+﻿using BookSaver.DataContracts;
 using BookSaver.Entities;
-using System.Configuration;
+using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Data;
 
 namespace BookSaver.DatabaseBookData
 {

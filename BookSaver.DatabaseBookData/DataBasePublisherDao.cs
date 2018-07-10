@@ -1,10 +1,8 @@
 ﻿using BookSaver.DataContracts;
 using BookSaver.Entities;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace BookSaver.DatabaseBookData
 {
@@ -20,6 +18,20 @@ namespace BookSaver.DatabaseBookData
         private Publisher ConsctructPublisherFromSelection(SqlDataReader reader)
         {
             return new Publisher((int)reader["ID_Publisher"], reader["Name"].ToString(), reader["City"].ToString(), reader["Street"].ToString(), (int)reader["House_Number"]);
+        }
+
+        private List<Publisher> ConstructPublishersListBySelection(SqlCommand command)
+        {
+            List<Publisher> publishers = new List<Publisher>();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    publishers.Add(ConsctructPublisherFromSelection(reader));
+                }
+            }
+
+            return publishers;
         }
 
         public Publisher GetPublisherByBookId(int id)
@@ -66,6 +78,17 @@ namespace BookSaver.DatabaseBookData
                     }
                     else return null;
                 }
+            }
+        }
+
+        public IEnumerable<Publisher> GetAllPublishers()
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("dbo.Select_All_Publishers", con))
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                con.Open();
+                return ConstructPublishersListBySelection(command);
             }
         }
     }

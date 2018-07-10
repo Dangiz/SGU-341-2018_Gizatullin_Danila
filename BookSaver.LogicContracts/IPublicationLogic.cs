@@ -1,16 +1,12 @@
-﻿using System;
+﻿using BookSaver.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookSaver.Entities;
 
 namespace BookSaver.LogicContracts
 {
     public interface IPublicationLogic
     {
         IEnumerable<Publication> GetAllPublications();
-        IEnumerable<Author> GetPublicationAuthors(Publication publication);
-        Magazine GetPublicationMagazine(Publication publication);
+        IEnumerable<Author> GetPublicationAuthors(int publicationId);
+        Magazine GetPublicationMagazine(int publicationId);
     }
 }

@@ -40,11 +40,11 @@ namespace BookSaver.Logic
             return _authorDao.GetAllAuthors();
         }
 
-        public IEnumerable<Publication> GetAuhtorPublications(Author author)
+        public IEnumerable<Publication> GetAuhtorPublications(int authorId)
         {
-            if (_authorDao.GetAuthorByID(author.Id)!=null)
+            if (_authorDao.GetAuthorByID(authorId)!=null)
             {
-                return _publicationDao.GetPublicationByAuthorId(author.Id);
+                return _publicationDao.GetPublicationByAuthorId(authorId);
             }
             else
             {

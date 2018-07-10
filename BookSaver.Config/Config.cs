@@ -1,9 +1,9 @@
-﻿using System;
-using Ninject;
-using BookSaver.LogicContracts;
+﻿using BookSaver.DatabaseBookData;
 using BookSaver.DataContracts;
 using BookSaver.Logic;
-using BookSaver.DatabaseBookData;
+using BookSaver.LogicContracts;
+using Ninject;
+using System;
 using System.Configuration;
 
 namespace BookSaver.Config
@@ -25,6 +25,13 @@ namespace BookSaver.Config
             kernel
                 .Bind<IPublicationLogic>()
                 .To<PublicationLogic>();
+            kernel
+                .Bind<IMagazineLogic>()
+                .To<MagazineLogic>();
+            kernel
+                .Bind<IPublisherLogic>()
+                .To<PublisherLogic>();
+
 
             switch (ConfigurationManager.AppSettings["DataBaseAccesType"])
             {
@@ -58,6 +65,9 @@ namespace BookSaver.Config
                         kernel
                           .Bind<IPublicationDataAccess>()
                           .To<DataBasePublicationDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
+                        kernel
+                           .Bind<IMagazineDataAccess>()
+                           .To<DataBaseMagazineDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
                         break;
                     }
                 default:

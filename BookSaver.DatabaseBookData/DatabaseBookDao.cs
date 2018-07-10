@@ -1,9 +1,9 @@
 ﻿
-using System.Collections.Generic;
 using BookSaver.DataContracts;
 using BookSaver.Entities;
-using System.Data.SqlClient;
+using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace BookSaver.DatabaseBookData
 {
@@ -181,6 +181,11 @@ namespace BookSaver.DatabaseBookData
                 con.Open();
                 return ConstructBooksListBySelection(command);
             }
+        }
+
+        public IEnumerable<Book> GetBooksByPublisherID(int id)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

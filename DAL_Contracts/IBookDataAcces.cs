@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using BookSaver.Entities;
+﻿using BookSaver.Entities;
+using System.Collections.Generic;
 
 namespace BookSaver.DataContracts
 {
@@ -10,6 +10,7 @@ namespace BookSaver.DataContracts
         IEnumerable<Book> GetAllBooks();
         IEnumerable<Book> GetBooksByGenreID(int id);
         IEnumerable<Book> GetBooksByAuthorID(int id);
+        IEnumerable<Book> GetBooksByPublisherID(int id);
         bool IsBookUnique(Book book,int publisherId);
         void RemoveBookById(int id);
     }
