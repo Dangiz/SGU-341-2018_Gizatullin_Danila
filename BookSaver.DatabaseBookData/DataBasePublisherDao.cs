@@ -17,7 +17,12 @@ namespace BookSaver.DatabaseBookData
 
         private Publisher ConsctructPublisherFromSelection(SqlDataReader reader)
         {
-            return new Publisher((int)reader["ID_Publisher"], reader["Name"].ToString(), reader["City"].ToString(), reader["Street"].ToString(), (int)reader["House_Number"]);
+            int id = (int)reader["ID_Publisher"];
+            string name = reader["Name"] as string;
+            string city = reader["City"] as string;
+            string street = reader["Street"] as string;
+            int houseNumber = (int)reader["House_Number"];
+            return new Publisher(id,name,city,street,houseNumber );
         }
 
         private List<Publisher> ConstructPublishersListBySelection(SqlCommand command)
@@ -62,21 +67,23 @@ namespace BookSaver.DatabaseBookData
         public Publisher GetPublisherById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand("dbo.Select_Publisher_By_Id", con))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
+                using (SqlCommand command = new SqlCommand("dbo.Select_Publisher_By_Id", con))
                 {
-                    Value = id
-                });
-                con.Open();
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Publisher_ID", System.Data.SqlDbType.Int)
                     {
-                        return ConsctructPublisherFromSelection(reader);
+                        Value = id
+                    });
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return ConsctructPublisherFromSelection(reader);
+                        }
+                        else return null;
                     }
-                    else return null;
                 }
             }
         }

@@ -9,10 +9,10 @@ namespace BookSaver.Logic
 {
     public class GenreLogic : IGenreLogic
     {
-        IGenreDataAcces _genreDao;
+        IGenreDataAccess _genreDao;
         IBookDataAcces _bookDao;
 
-        public GenreLogic(IGenreDataAcces genreDao, IBookDataAcces bookDao)
+        public GenreLogic(IGenreDataAccess genreDao, IBookDataAcces bookDao)
         {
             _genreDao = genreDao;
             _bookDao = bookDao;
@@ -20,7 +20,7 @@ namespace BookSaver.Logic
 
         public void AddGenre(string name)
         {
-            if (String.IsNullOrEmpty(name) || name.Length > 70 || Regex.Match(name, @"\A[a-zA-Z]+\Z").Length != name.Length)
+            if (!ValidationHelper.StringAlphaValidation(name,70))
             {
                 throw new ArgumentException("Wrong Genre name format");
             }
@@ -37,13 +37,17 @@ namespace BookSaver.Logic
             return _genreDao.GetAllGenres();
         }
 
-        public IEnumerable<Book> GetGenreBooks(int genreId)
+
+        public IEnumerable<Genre> GetGenresByBookId(int bookId)
         {
-            if (_genreDao.GetGenreById(genreId) != null)
+            if (_bookDao.GetBookById(bookId) != null)
             {
-                return _bookDao.GetBooksByGenreID(genreId);
+                return _genreDao.GetGenresByBookId(bookId);
             }
-            else throw new ArgumentException("No Genre with such id");
+            else
+            {
+                throw new ArgumentException("No book with such id");
+            }
         }
     }
 }

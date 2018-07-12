@@ -9,6 +9,6 @@ namespace BookSaver.DataContracts
         Author GetAuthorByID(int id);
         IEnumerable<Author> GetAuthorsByBookId(int id);
         void AddAuthor(Author author);
-        void RemoveAllLazyAuthors();
+        void RemoveAuthorsWithoutAnyPublicationsOrBooks();
     }
 }

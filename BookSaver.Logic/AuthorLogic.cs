@@ -21,13 +21,26 @@ namespace BookSaver.Logic
             _publicationDao = publicationDao;
         }
 
+        public IEnumerable<Author> GetAuthorsByBookId(int bookId)
+        {
+            if (_bookDao.GetBookById(bookId) != null)
+            {
+                return _authorDao.GetAuthorsByBookId(bookId);
+            }
+            else
+            {
+                throw new ArgumentException("No book with such id");
+            }
+
+        }
+
         public void AddAuthor(string name, string surname)
         {
-            if(String.IsNullOrEmpty(name) || name.Length>150 || Regex.Match(name, @"\A[a-zA-Z]+\Z").Length!=name.Length)
+            if(!ValidationHelper.StringAlphaValidation(name,150))
             {
                 throw new ArgumentException("Author name has wrong format");
             }
-            if (String.IsNullOrEmpty(surname) || surname.Length > 150 || Regex.Match(surname, @"\A[a-zA-Z]+\Z").Length != surname.Length)
+            if (!ValidationHelper.StringAlphaValidation(surname, 150))
             {
                 throw new ArgumentException("Author surname has wrong format");
             }
@@ -40,28 +53,9 @@ namespace BookSaver.Logic
             return _authorDao.GetAllAuthors();
         }
 
-        public IEnumerable<Publication> GetAuhtorPublications(int authorId)
+        public IEnumerable<Author> GetAuthorsByPublicationId(int publicationId)
         {
-            if (_authorDao.GetAuthorByID(authorId)!=null)
-            {
-                return _publicationDao.GetPublicationByAuthorId(authorId);
-            }
-            else
-            {
-                throw new ArgumentException("No Author with such id");
-            }
-        }
-
-        public IEnumerable<Book> GetAuthorBooks(int authorId)
-        {
-            if(_authorDao.GetAuthorByID(authorId)!=null)
-            {
-                return _bookDao.GetBooksByAuthorID(authorId);
-            }
-            else
-            {
-                throw new ArgumentException("No Author with such id");
-            }
+            throw new NotImplementedException();
         }
     }
 }

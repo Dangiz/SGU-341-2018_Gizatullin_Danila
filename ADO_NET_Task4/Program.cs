@@ -14,6 +14,7 @@ namespace ADO_NET_Task4
         private static IPublicationLogic _publicationLogic;
         private static IMagazineLogic _magazineLogic;
         private static IPublisherLogic _publisherLogic;
+
         static Program()
         {
             IKernel ninjectKernel = new StandardKernel();
@@ -34,15 +35,15 @@ namespace ADO_NET_Task4
                 {
                     ShowBook(book);
                     Console.WriteLine("Authors:");
-                    foreach (Author author in _bookLogic.GetBookAuthors(book.Id))
+                    foreach (Author author in _authorLogic.GetAuthorsByBookId(book.Id))
                         ShowAuthor(author);
                     Console.WriteLine("Genres:");
-                    foreach (Genre genre in _bookLogic.GetBookGenres(book.Id))
+                    foreach (Genre genre in _genreLogic.GetGenresByBookId(book.Id))
                         ShowGenre(genre);
                     Console.WriteLine();
                 }
 
-                foreach(Publication publication in _authorLogic.GetAuhtorPublications(2))
+                foreach(Publication publication in _publicationLogic.GetPublicationsByAuthorId(2))
                 {
                     ShowPublication(publication);
                 }

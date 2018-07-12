@@ -10,11 +10,11 @@ namespace BookSaver.Logic
     public class BookLogic : IBookLogic
     {
         private IBookDataAcces _bookDao;
-        private IGenreDataAcces _genreDao;
+        private IGenreDataAccess _genreDao;
         private IAuthorDataAccess _authorDao;
         private IPublisherDataAccess _publisherDao;
 
-        public BookLogic(IBookDataAcces bookDao, IGenreDataAcces genreDao, IAuthorDataAccess authorDao, IPublisherDataAccess publisherDao)
+        public BookLogic(IBookDataAcces bookDao, IGenreDataAccess genreDao, IAuthorDataAccess authorDao, IPublisherDataAccess publisherDao)
         {
             _bookDao = bookDao;
             _genreDao = genreDao;
@@ -22,7 +22,12 @@ namespace BookSaver.Logic
             _publisherDao = publisherDao;
         }
 
-        public void AddBook(string name, int year, int authorId, int genreId, int publisherId)
+        public IEnumerable<Book> GetBooksByPublisherId(int publisherId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddBook(string name, int year, int authorId, int genreId, int publisherId)
         { 
 
             if(_authorDao.GetAuthorByID(authorId)==null)
@@ -37,14 +42,14 @@ namespace BookSaver.Logic
             {
                 throw new ArgumentException("Publisher with this Id does not exist");
             }
-            if (String.IsNullOrEmpty(name) || name.Length > 150 || Regex.Match(name,@"\A[a-zA-Z0-9 ]+\Z").Length!=name.Length)
+            if (!ValidationHelper.StringAlphaNumericValidation(name,150))
             {
                 throw new ArgumentException();
             }
 
-            if (year / 1000 != 2 & year / 1000 != 1)
+            if (!ValidationHelper.YearValidation(year))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Wrong Year format");
             }
 
             Book book = new Book() { Name = name, Year = year };
@@ -54,7 +59,7 @@ namespace BookSaver.Logic
                 throw new ArgumentException();
             }
 
-            _bookDao.AddBook(book, authorId, genreId, publisherId);
+            return _bookDao.AddBook(book, authorId, genreId, publisherId);
         }
 
         public IEnumerable<Book> GetAllBooks()
@@ -62,29 +67,25 @@ namespace BookSaver.Logic
             return _bookDao.GetAllBooks();
         }
 
-        public IEnumerable<Author> GetBookAuthors(int bookId)
+        public IEnumerable<Book> GetBooksByAuthorId(int authorId)
         {
-            if (_bookDao.GetBookById(bookId) != null)
+            if (_authorDao.GetAuthorByID(authorId) != null)
             {
-                return _authorDao.GetAuthorsByBookId(bookId);
+                return _bookDao.GetBooksByAuthorID(authorId);
             }
             else
             {
-                throw new ArgumentException("No book with such id");
+                throw new ArgumentException("No Author with such id");
             }
-
         }
 
-        public IEnumerable<Genre> GetBookGenres(int bookId)
+        public IEnumerable<Book> GetBooksByGenreId(int genreId)
         {
-            if (_bookDao.GetBookById(bookId) != null)
+            if (_genreDao.GetGenreById(genreId) != null)
             {
-                return _genreDao.GetGenresByBookId(bookId);
+                return _bookDao.GetBooksByGenreID(genreId);
             }
-            else
-            {
-                throw new ArgumentException("No book with such id");
-            }
+            else throw new ArgumentException("No Genre with such id");
         }
 
         public void RemoveBookAtId(int id)
@@ -92,7 +93,7 @@ namespace BookSaver.Logic
             if (_bookDao.GetBookById(id) != null)
             {
                 _bookDao.RemoveBookById(id);
-                _authorDao.RemoveAllLazyAuthors();
+                _authorDao.RemoveAuthorsWithoutAnyPublicationsOrBooks();
             }
             else
             {

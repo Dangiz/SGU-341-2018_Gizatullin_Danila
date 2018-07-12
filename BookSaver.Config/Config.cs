@@ -54,7 +54,7 @@ namespace BookSaver.Config
                             .Bind<IBookDataAcces>()
                             .To<DatabaseBookDao>().InSingletonScope().WithConstructorArgument("connectionString",connectionString);
                         kernel
-                            .Bind<IGenreDataAcces>()
+                            .Bind<IGenreDataAccess>()
                             .To<DataBaseGenreDao>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
                         kernel
                             .Bind<IAuthorDataAccess>()

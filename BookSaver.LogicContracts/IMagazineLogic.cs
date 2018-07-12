@@ -5,7 +5,7 @@ namespace BookSaver.LogicContracts
 {
     public interface IMagazineLogic
     {
-        IEnumerable<Publication> GetMagazinePublications(int magazineId);
-        Publisher GetMagazinePublisher(int publisherId);
+        Magazine GetMagazineByPublicationId(int publicationId);
+        IEnumerable<Magazine> GetMagazinesByPublisherId(int publisherId);
     }
 }

@@ -7,8 +7,8 @@ namespace BookSaver.LogicContracts
     public interface IAuthorLogic
     {
         IEnumerable<Author> GetAllAuthors();
-        IEnumerable<Publication> GetAuhtorPublications(int authorId);
-        IEnumerable<Book> GetAuthorBooks(int authorId);
+        IEnumerable<Author> GetAuthorsByBookId(int bookId);
+        IEnumerable<Author> GetAuthorsByPublicationId(int publicationId);
         void AddAuthor(string name, string surname);
     }
 }

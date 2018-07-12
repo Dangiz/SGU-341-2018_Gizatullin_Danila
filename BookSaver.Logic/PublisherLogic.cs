@@ -15,7 +15,7 @@ namespace BookSaver.Logic
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Book> GetPublisherBooks(int publisherId)
+        public Publisher GetPublisherByMagazineId(int publisherId)
         {
             throw new NotImplementedException();
         }

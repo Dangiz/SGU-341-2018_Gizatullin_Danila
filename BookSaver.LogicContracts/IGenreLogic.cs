@@ -7,6 +7,7 @@ namespace BookSaver.LogicContracts
     {
         void AddGenre(string name);
         IEnumerable<Genre> GetAllGenres();
-        IEnumerable<Book> GetGenreBooks(int genreId);
+        IEnumerable<Genre> GetGenresByBookId(int bookId);
+        
     }
 }

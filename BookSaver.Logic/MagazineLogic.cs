@@ -10,12 +10,12 @@ namespace BookSaver.Logic
 {
     public class MagazineLogic : IMagazineLogic
     {
-        public IEnumerable<Publication> GetMagazinePublications(int magazineId)
+        public Magazine GetMagazineByPublicationId(int publicationId)
         {
             throw new NotImplementedException();
         }
 
-        public Publisher GetMagazinePublisher(int publisherId)
+        public IEnumerable<Magazine> GetMagazinesByPublisherId(int publisherId)
         {
             throw new NotImplementedException();
         }

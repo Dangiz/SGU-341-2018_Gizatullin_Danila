@@ -20,7 +20,9 @@ namespace BookSaver.DatabaseBookData
 
         private Magazine ConsctructMagazineFromSelection(SqlDataReader reader)
         {
-            return new Magazine((int)reader["ID_Magazine"], reader["Name"].ToString());
+            int id = (int)reader["ID_Magazine"];
+            string name = reader["Name"] as string;
+            return new Magazine(id,name );
         }
 
         private List<Magazine> ConstructMagazinesListBySelection(SqlCommand command)
@@ -40,17 +42,30 @@ namespace BookSaver.DatabaseBookData
         public IEnumerable<Magazine> GetAllMagazines()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand("dbo.Select_All_Magazines", con))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                con.Open();
-                return ConstructMagazinesListBySelection(command);
+                using (SqlCommand command = new SqlCommand("dbo.Select_All_Magazines", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    con.Open();
+                    return ConstructMagazinesListBySelection(command);
+                }
             }
         }
 
         public Magazine GetMagazineById(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.Select_Magazine_By_Id", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    con.Open();
+                    using(var reader=command.ExecuteReader())
+                    {
+                        return ConsctructMagazineFromSelection(reader);
+                    }
+                }
+            }
         }
 
         public Magazine GetMagazineByPublicationId()

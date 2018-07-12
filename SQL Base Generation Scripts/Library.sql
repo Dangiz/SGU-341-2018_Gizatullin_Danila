@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for SQL Server, Версия 5.5.327.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/sql/studio
--- Дата скрипта: 7/10/2018 1:16:48 PM
+-- Дата скрипта: 7/12/2018 3:04:08 PM
 -- Версия сервера: 14.00.1000
 --
 
@@ -121,6 +121,19 @@ ON [PRIMARY]
 GO
 
 --
+-- Создать процедуру [dbo].[Select_Magazine_By_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Magazine_By_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Magazine_By_Id @Magazine_ID INT
+AS 
+BEGIN
+  SELECT * FROM Magazine m WHERE m.ID_Magazine=@Magazine_ID
+END
+GO
+
+--
 -- Создать процедуру [dbo].[Select_AllMagazines]
 --
 GO
@@ -171,6 +184,19 @@ CREATE OR ALTER PROCEDURE dbo.Select_Genre_By_Id @Genre_ID INT
 AS 
 BEGIN
   SELECT * FROM Genre g WHERE g.ID_Genre=@Genre_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_All_Genres]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_All_Genres]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_All_Genres
+AS 
+BEGIN
+  SELECT * FROM Genre g
 END
 GO
 
@@ -228,6 +254,19 @@ GO
 CREATE OR ALTER PROCEDURE dbo.Select_Publisher_By_IDBook @ID_Book INT
 AS 
 SELECT p.ID_Publisher,p.Name,p.City,p.Street,p.House_Number FROM Book JOIN Publisher p ON Book.ID_Publisher = p.ID_Publisher WHERE ID_Book=@ID_Book
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Books_By_Publisher_ID]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Books_By_Publisher_ID]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Books_By_Publisher_ID @Publisher_ID INT
+AS 
+BEGIN
+  SELECT * FROM Book b WHERE b.ID_Publisher=@Publisher_ID
+END
 GO
 
 --

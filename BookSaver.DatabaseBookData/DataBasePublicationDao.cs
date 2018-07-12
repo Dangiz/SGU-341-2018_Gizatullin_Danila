@@ -18,7 +18,10 @@ namespace BookSaver.DatabaseBookData
 
         private Publication ConstructPublicationBySelection(SqlDataReader reader)
         {
-            return new Publication((int)reader["ID_Publication"], (string) reader["Name"], (int)reader["Publishing_Year"]);
+            int id = (int)reader["ID_Publication"];
+            string name = reader["Name"] as string;
+            int year = (int)reader["Publishing_Year"];
+            return new Publication(id,name,year);
         }
 
         private List<Publication> ConstructBooksListBySelection(SqlCommand command)
@@ -38,26 +41,30 @@ namespace BookSaver.DatabaseBookData
         public IEnumerable<Publication> GetAllPublications()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand("dbo.Select_All_Publications", con))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                con.Open();
-                return ConstructBooksListBySelection(command);
+                using (SqlCommand command = new SqlCommand("dbo.Select_All_Publications", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    con.Open();
+                    return ConstructBooksListBySelection(command);
+                }
             }
         }
 
         public IEnumerable<Publication> GetPublicationByAuthorId(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand command = new SqlCommand("dbo.Select_Publications_By_Author_ID", con))
             {
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.Add(new SqlParameter("@Author_ID", SqlDbType.Int)
+                using (SqlCommand command = new SqlCommand("dbo.Select_Publications_By_Author_ID", con))
                 {
-                    Value = id
-                });
-                con.Open();
-                return ConstructBooksListBySelection(command);
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Author_ID", SqlDbType.Int)
+                    {
+                        Value = id
+                    });
+                    con.Open();
+                    return ConstructBooksListBySelection(command);
+                }
             }
         }
     }
