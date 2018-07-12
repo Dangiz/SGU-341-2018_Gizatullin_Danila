@@ -11,28 +11,35 @@ namespace BookSaver.Logic.Tests
     [TestClass()]
     public class ValidationHelperLogicTests
     {
+        public TestContext TestContext {get; set;}
         [TestMethod()]
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", "testData.xml", "year", DataAccessMethod.Sequential)]
         public void YearValidationTest()
         {
-            int year = 2010;
+            int year = Convert.ToInt32(TestContext.DataRow["number"]);
+            bool expected = Convert.ToBoolean(TestContext.DataRow["expected"]);
             bool actual = ValidationHelper.YearValidation(year);
-            Assert.AreEqual(true, actual);
+            Assert.AreEqual(expected, actual);
         }
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", "testData.xml", "alphaWord", DataAccessMethod.Sequential)]
         [TestMethod()]
         public void StringAlphaValidationTest()
         {
-            string name = "History";
-            int length = 70;
+            string name = Convert.ToString(TestContext.DataRow["name"]);
+            int length = Convert.ToInt32(TestContext.DataRow["length"]);
+            bool expected = Convert.ToBoolean(TestContext.DataRow["expected"]);
             bool actual = ValidationHelper.StringAlphaValidation(name,length);
-            Assert.AreEqual(true, actual);
+            Assert.AreEqual(expected, actual);
         }
+        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML","testData.xml","alphaNumericWord",DataAccessMethod.Sequential)]
         [TestMethod()]
         public void StringAlphaNumericValidationTest()
         {
-            string name = "History2";
-            int length = 70;
+            string name = Convert.ToString(TestContext.DataRow["name"]);
+            int length = Convert.ToInt32(TestContext.DataRow["length"]);
+            bool expected = Convert.ToBoolean(TestContext.DataRow["expected"]);
             bool actual = ValidationHelper.StringAlphaNumericValidation(name, length);
-            Assert.AreEqual(true, actual);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

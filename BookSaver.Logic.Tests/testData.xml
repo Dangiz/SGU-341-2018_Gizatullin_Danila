@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <alphaNumericWord name="History" length="70" expected="true"/>
+  <alphaNumericWord name="H1st0ry" length="70" expected="true"/>
+  <alphaNumericWord name="Hist-ory" length="70" expected="false"/>
+  <alphaNumericWord name="Somebody once told me" length="10" expected="false"/>
+  <alphaNumericWord name="Somebody once told me." length="70" expected="false"/>
+  <alphaNumericWord name="N0_U" length="70" expected="false"/>
+  <alphaWord name="History" length="70" expected="true"/>
+  <alphaWord name="H1st0ry" length="70" expected="false"/>
+  <alphaWord name="Hist-ory" length="70" expected="false"/>
+  <alphaWord name="Somebody once told me" length="10" expected="false"/>
+  <alphaWord name="Somebody once told me." length="70" expected="false"/>
+  <alphaWord name="N0_U" length="70" expected="false"/>
+  <year number="2010" expected="true"/>
+  <year number="42" expected="false"/>
+  <year number="1942" expected="true"/>
+  <year number="998" expected="false"/>
+</data>
