@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSaver.DatabaseBookData"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{4950BC60-A74A-45F8-912D-C7C8DAB6571C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSaver.Logic.Tests", "BookSaver.Logic.Tests\BookSaver.Logic.Tests.csproj", "{07EE52C1-86E5-4690-8918-E71CF2515037}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookSaver.Logic.UnitTests", "BookSaver.Logic.Tests\BookSaver.Logic.UnitTests.csproj", "{07EE52C1-86E5-4690-8918-E71CF2515037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

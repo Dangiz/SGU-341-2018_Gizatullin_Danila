@@ -16,4 +16,5 @@
   <year number="42" expected="false"/>
   <year number="1942" expected="true"/>
   <year number="998" expected="false"/>
+  <dataElement name="Name" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="false" genreFound="true" publisherFound="true" expectedResult="AuthorArgumentException"/>
 </data>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<data>
+  <bookDataElement name="Name" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="false" genreFound="true" publisherFound="true" expectedResult="AuthorArgumentException"/>
+  <bookDataElement name="_Na-()me" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="true" genreFound="true" publisherFound="true" expectedResult="NameFormatArgumentException"/>
+  <bookDataElement name="Name" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="false" authorFound="true" genreFound="true" publisherFound="true" expectedResult="BookUniqueArgumentException"/>
+  <bookDataElement name="Name" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="true" genreFound="false" publisherFound="true" expectedResult="GenreArgumentException"/>
+  <bookDataElement name="Name" year="2014" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="true" genreFound="true" publisherFound="false" expectedResult="PublisherArgumentException"/>
+  <bookDataElement name="Name" year="20114" authorId="1" genreId="1" publisherId="1" isBookUnique="true" authorFound="true" genreFound="true" publisherFound="false" expectedResult="YearFormatArgumentException"/>
+  <removeBookIdElement id="1" bookFound="false" expectedResult="BookIdArgumentException"/>
+  <removeBookIdElement id="1" bookFound="true" expectedResult="Complete"/>
+</data>

@@ -44,7 +44,7 @@ namespace BookSaver.Logic
             }
             if (!ValidationHelper.StringAlphaNumericValidation(name,150))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Wrong book name format");
             }
 
             if (!ValidationHelper.YearValidation(year))
@@ -56,7 +56,7 @@ namespace BookSaver.Logic
 
             if(!_bookDao.IsBookUnique(book,publisherId))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Book with this data already exist");
             }
 
             return _bookDao.AddBook(book, authorId, genreId, publisherId);
