@@ -7,6 +7,7 @@ namespace BookSaver.DataContracts
     {
         Magazine GetMagazineById(int id);
         IEnumerable<Magazine> GetAllMagazines();
-        Magazine GetMagazineByPublicationId();
+        Magazine GetMagazineByPublicationId(int id);
+        IEnumerable<Magazine> GetMagazinesByPublisherId(int id);
     }
 }

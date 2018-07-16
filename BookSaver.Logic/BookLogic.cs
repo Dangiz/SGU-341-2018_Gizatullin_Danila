@@ -24,7 +24,7 @@ namespace BookSaver.Logic
 
         public IEnumerable<Book> GetBooksByPublisherId(int publisherId)
         {
-            throw new NotImplementedException();
+            return _bookDao.GetBooksByPublisherID(publisherId);
         }
 
         public int AddBook(string name, int year, int authorId, int genreId, int publisherId)

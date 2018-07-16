@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for SQL Server, Версия 5.5.327.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/sql/studio
--- Дата скрипта: 7/12/2018 3:04:08 PM
+-- Дата скрипта: 16.07.2018 15:42:32
 -- Версия сервера: 14.00.1000
 --
 
@@ -118,6 +118,45 @@ CREATE TABLE dbo.Magazine (
   CONSTRAINT PK_MAGAZINE PRIMARY KEY CLUSTERED (ID_Magazine)
 )
 ON [PRIMARY]
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Publications_By_Magazine_ID]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Publications_By_Magazine_ID]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Publications_By_Magazine_ID @Magazine_ID INT
+AS 
+BEGIN
+  SELECT p.ID_Publication,p.Name,p.Name,p.Publishing_Year FROM Publication p JOIN Magazine m ON p.ID_Magazine = m.ID_Magazine WHERE m.ID_Magazine=@Magazine_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Magazines_By_Publisher_ID]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Magazines_By_Publisher_ID]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Magazines_By_Publisher_ID @Publisher_ID INT
+AS 
+BEGIN
+  SELECT m.ID_Magazine,m.Name FROM Magazine m WHERE m.ID_Publisher=@Publisher_ID
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Magazine_By_Publication_ID]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Magazine_By_Publication_ID]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Magazine_By_Publication_ID @Publication_ID INT
+AS 
+BEGIN
+  SELECT m.ID_Magazine,m.Name FROM Magazine m JOIN Publication p ON m.ID_Magazine = p.ID_Magazine WHERE p.ID_Publication=@Publication_ID
+END
 GO
 
 --
@@ -433,6 +472,19 @@ GO
 CREATE OR ALTER PROCEDURE dbo.Select_Publications_By_Author_Id @Author_ID INT
 AS BEGIN
   SELECT p.ID_Publication,p.Name,p.Publishing_Year,p.ID_Magazine FROM Publication_To_Author pta JOIN Publication p ON pta.ID_Publication = p.ID_Publication WHERE @Author_ID=pta.ID_Author
+END
+GO
+
+--
+-- Создать процедуру [dbo].[Select_Authors_By_Publication_Id]
+--
+GO
+PRINT (N'Создать процедуру [dbo].[Select_Authors_By_Publication_Id]')
+GO
+CREATE OR ALTER PROCEDURE dbo.Select_Authors_By_Publication_Id @Publication_ID INT
+AS 
+BEGIN
+SELECT a.ID_Author,a.Name,a.Surname FROM Publication_To_Author pta JOIN Author a ON pta.ID_Author = a.ID_Author WHERE @Publication_ID=pta.ID_Publication
 END
 GO
 

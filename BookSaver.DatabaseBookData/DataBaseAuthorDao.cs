@@ -90,6 +90,23 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
+        public IEnumerable<Author> GetAuthorsByPublicationId(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.Select_Authors_By_Publication_Id", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Publication_ID", System.Data.SqlDbType.Int)
+                    {
+                        Value = id
+                    });
+                    con.Open();
+                    return ConstructAuthorsListFromSelection(command);
+                }
+            }
+        }
+
         public void AddAuthor(Author author)
         {
             using (SqlConnection con = new SqlConnection(connectionString))

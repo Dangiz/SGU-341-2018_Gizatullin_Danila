@@ -67,5 +67,22 @@ namespace BookSaver.DatabaseBookData
                 }
             }
         }
+
+        public IEnumerable<Publication> GetPublicationsByMagazineId(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.Select_Publications_By_Magazine_ID", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Magazine_ID", SqlDbType.Int)
+                    {
+                        Value = id
+                    });
+                    con.Open();
+                    return ConstructBooksListBySelection(command);
+                }
+            }
+        }
     }
 }

@@ -48,7 +48,8 @@ namespace ADO_NET_Task4
                     ShowPublication(publication);
                 }
 
-            _genreLogic.AddGenre("History");
+            var b=_authorLogic.GetAuthorsByPublicationId(2);
+            var a = 0;
         }
 
         private static void ShowBook(Book book)

@@ -55,7 +55,7 @@ namespace BookSaver.Logic
 
         public IEnumerable<Author> GetAuthorsByPublicationId(int publicationId)
         {
-            throw new NotImplementedException();
+            return _authorDao.GetAuthorsByPublicationId(publicationId);
         }
     }
 }

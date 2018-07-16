@@ -52,6 +52,20 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
+        public IEnumerable<Magazine> GetMagazinesByPublisherId(int id)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.Select_Magazines_By_Publisher_ID", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Publisher_ID", id));
+                    con.Open();
+                    return ConstructMagazinesListBySelection(command);
+                }
+            }
+        }
+
         public Magazine GetMagazineById(int id)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -68,9 +82,21 @@ namespace BookSaver.DatabaseBookData
             }
         }
 
-        public Magazine GetMagazineByPublicationId()
+        public Magazine GetMagazineByPublicationId(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.Select_Magazine_By_Publication_ID", con))
+                {
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@Publication_ID", id));
+                    con.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return ConsctructMagazineFromSelection(reader);
+                    }
+                }
+            }
         }
     }
 }

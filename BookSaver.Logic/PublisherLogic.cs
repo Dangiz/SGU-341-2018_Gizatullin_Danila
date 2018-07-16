@@ -5,24 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using BookSaver.LogicContracts;
 using BookSaver.Entities;
+using BookSaver.DataContracts;
 
 namespace BookSaver.Logic
 {
     public class PublisherLogic : IPublisherLogic
     {
+        IPublisherDataAccess _publisherDao;
+
+        public PublisherLogic(IPublisherDataAccess publisherDao)
+        {
+            _publisherDao = publisherDao;
+        }
+
         public IEnumerable<Publisher> GetAllPublishers()
         {
-            throw new NotImplementedException();
+            return _publisherDao.GetAllPublishers();
         }
 
-        public Publisher GetPublisherByMagazineId(int publisherId)
+        public Publisher GetPublisherByBookId(int bookId)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Magazine> GetPublisherMagazines(int publisherId)
-        {
-            throw new NotImplementedException();
+            return _publisherDao.GetPublisherByBookId(bookId);
         }
     }
 }

@@ -36,17 +36,7 @@ namespace BookSaver.Logic
 
         public IEnumerable<Publication> GetPublicationsByMagazineId(int magazineId)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Author> GetPublicationAuthors(int publicationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Magazine GetPublicationMagazine(int publicationId)
-        {
-            throw new NotImplementedException();
+            return _publicationDao.GetPublicationsByMagazineId(magazineId);
         }
     }
 }
